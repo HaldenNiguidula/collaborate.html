@@ -157,23 +157,6 @@
       transition: background-color 0.3s ease;
     }
 
-    /* Style for "Clear All" button */
-    .order-controls button:nth-child(1) {
-      background-color: #dc3545;
-    }
-
-    .order-controls button:nth-child(1):hover {
-      background-color: #c82333;
-    }
-
-    /* Style for "Checkout" button */
-    .order-controls button:nth-child(2) {
-      background-color: #28a745;
-    }
-
-    .order-controls button:nth-child(2):hover {
-      background-color: #218838;
-    }
 
     section {
       flex: 1;
@@ -213,12 +196,12 @@
     /* Clear All Button */
     .order-controls button:nth-child(1) {
       background-color: #FFD483;
-      color: white;
+      color: black;
     }
 
     .order-controls button:nth-child(1):hover {
       background-color: #FFD483;
-      color: white;
+      color: black;
     }
 
     /* Checkout Button */
@@ -525,7 +508,7 @@
             </div>
         </div>
       </section>
-      <section style="flex: 1; padding: 20px; border-left: 1px solid #ccc; background-color: #f9f9f9; display: flex; flex-direction: column; justify-content: space-between; height: 90vh;">
+      <section style="flex: 1; padding: 20px; border-left: 1px solid #ccc; background-color: #f9f9f9; display: flex; flex-direction: column; space-between; height: 90vh;">
         <div>
           <h3 style="background-color: #FFD483; padding: 20px; border-radius: 5px;">Orders</h3>
           <div id="order-list"></div>
