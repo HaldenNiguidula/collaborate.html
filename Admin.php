@@ -83,24 +83,6 @@
       transition: background-color 0.3s ease; /* Smooth transition for background color */
     }
 
-    /* Style for "Clear All" button */
-    .order-controls button:nth-child(1) {
-      background-color: #dc3545; /* Red background for Clear All */
-    }
-
-    .order-controls button:nth-child(1):hover {
-      background-color: #c82333; /* Darker red on hover */
-    }
-
-    /* Style for "Checkout" button */
-    .order-controls button:nth-child(2) {
-      background-color: #28a745; /* Green background for Checkout */
-    }
-
-    .order-controls button:nth-child(2):hover {
-      background-color: #218838; /* Darker green on hover */
-    }
-
     /* Order Section Styles */
     section {
       flex: 1;
@@ -142,12 +124,12 @@
     /* Clear All Button */
     .order-controls button:nth-child(1) {
       background-color: #FFD483;
-      color: white;
+      color: black;
     }
 
     .order-controls button:nth-child(1):hover {
       background-color: #FFD483;
-      color: white;
+      color: black;
     }
 
     /* Checkout Button */
@@ -277,6 +259,21 @@
       padding: 8px 15px;
       font-weight: bold;
     }
+
+    /* Dine In / Take Out Section */
+    #order-type-section {
+      margin: 15px 0 18px 0;
+    }
+    #order-type-section label {
+      margin-right: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    #order-type-section input[type="radio"] {
+      margin-right: 6px;
+      cursor: pointer;
+    }
     
     /* Responsive tweaks for small/mobile screens */
     @media (max-width: 600px) {
@@ -306,17 +303,103 @@
         padding: 10px;
         font-size: 14px;
       }
+      /* Resize logo image for mobile */
+      #logo-img {
+        max-height: 40px;
+        width: auto;
+      }
+    }
+
+    /* Logo Image Style */
+    #logo-img {
+      max-height: 50px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* Simplified Side Drawer Styles */
+    #side-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 240px;
+      height: 100vh;
+      background-color: #FFD483;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.3);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1500;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #side-drawer.open {
+      transform: translateX(0);
+    }
+    #side-drawer nav {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-weight: 600;
+    }
+    #side-drawer nav a {
+      color: #333;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      user-select: none;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+    #side-drawer nav a:hover {
+      background-color: #e6b74f;
+      color: black;
+    }
+    #close-drawer {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      color: #333;
+      user-select: none;
+      font-weight: bold;
+    }
+    #close-drawer:hover {
+      color: #b37700;
+    }
+    /* Backdrop overlay */
+    #drawer-backdrop {
+      display: none;
+      position: fixed;
+      top:0; left:0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.3);
+      z-index: 1400;
+    }
+    #drawer-backdrop.visible {
+      display: block;
+    }
+    /* Hamburger icon */
+    header .hamburger {
+      font-size: 38px;
+      cursor: pointer;
+      user-select: none;
+      line-height: 1;
+    }
+    header .hamburger.open {
+      color: #b37700;
     }
   </style>
 </head>
 <body>
   <!-- Container -->
   <div>
-    <header style="display: flex; padding: 10px 0; background: #D0AC77; text-align: center;">
+    <header style="display: flex; padding: 10px 0; background: #D0AC77; text-align: center; align-items: center;">
 
       <!-- Left: Hamburger -->
       <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 20px;">
-        <span style="font-size: 40px; cursor: pointer;">☰</span>
+        <span class="hamburger" role="button" aria-label="Toggle menu" tabindex="0" aria-expanded="false">☰</span>
       </div>
 
       <!-- Center: Navigation Buttons -->
@@ -329,43 +412,27 @@
           </nav>
       </div>
 
-      <!-- Right: Logo -->
+      <!-- Right: Logo as Image -->
       <div style="flex: 1; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-        <div style="font-weight: bold; font-size: 20px;">BREWeb</div>
+        <img id="logo-img" src="logo.png" alt="BREWeb Logo" />
       </div>
-
     </header>
 
     <!-- Side Drawer -->
-    <div id="side-drawer" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 250px;
-        height: 100vh;
-        background-color: #FFD483;
-        box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        z-index: 1000;
-        padding: 20px;
-        ">
-        <button id="close-drawer" style="
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        ">← Options</button>
+    <div id="side-drawer" aria-hidden="true">
+      <button id="close-drawer" aria-label="Close menu">✖ Options</button>
 
-        <!-- Drawer Content -->
-        <nav style="display: flex; flex-direction: column; gap: 15px;">
-            <a href="#" style="text-decoration: none; color: #333;">Log In/Out</a>
-            <a href="#" style="text-decoration: none; color: #333;">Sales Report</a>
-            <a href="#" style="text-decoration: none; color: #333;">Transaction</a>
-            <a href="#" style="text-decoration: none; color: #333;">Cash Drawer</a>
-        </nav>
+      <!-- Drawer Content -->
+      <nav>
+          <a href="homepage.php">Log In/Out</a>
+          <a href="#">Sales Report</a>
+          <a href="transaction-page.php">Transaction</a>
+          <a href="cash-drawer.php">Cash Drawer</a>
+      </nav>
     </div>
+
+    <!-- Drawer Backdrop -->
+    <div id="drawer-backdrop" tabindex="-1"></div>
 
     <!-- Main Content -->
     <main style="display: flex; height: 100%;">
@@ -485,8 +552,20 @@
       <div id="payment-modal">
         <div>
           <h3>Select Payment Method</h3>
+
+          <!-- Dine In or Take Out -->
+          <div id="order-type-section" role="radiogroup" aria-label="Select Order Type">
+            <label>
+              <input type="radio" name="order-type" value="Dine In" checked />
+              Dine In
+            </label>
+            <label>
+              <input type="radio" name="order-type" value="Take Out" />
+              Take Out
+            </label>
+          </div>
           
-          <select id="payment-method">
+          <select id="payment-method" aria-label="Select Payment Method">
             <option value="cash">Cash</option>
             <option value="gcash">GCash</option>
           </select>
@@ -494,7 +573,7 @@
           <div id="cash-section">
             <p>Total Due: ₱<span id="payment-total">0.00</span></p>
             <label>Received Cash:
-                <input type="number" id="cash-input" min="0" step="0.01"/>
+                <input type="number" id="cash-input" min="0" step="0.01" aria-label="Received Cash Amount"/>
             </label>
             <p>Change: ₱<span id="change-amount">0.00</span></p>
           </div>
@@ -532,17 +611,56 @@
       });
     });
 
-    // Hamburger Menu
-    const drawer = document.getElementById("side-drawer");
-    const openBtn = document.querySelector("header span");
-    const closeBtn = document.getElementById("close-drawer");
+    // Simplified Side Drawer Logic
+    const drawer = document.getElementById('side-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const hamburger = document.querySelector('header .hamburger');
+    const closeBtn = document.getElementById('close-drawer');
 
-    openBtn.addEventListener("click", () => {
-      drawer.style.transform = "translateX(0)";   
+    function openDrawer() {
+      drawer.classList.add('open');
+      backdrop.classList.add('visible');
+      drawer.setAttribute('aria-hidden', 'false');
+      hamburger.setAttribute('aria-expanded', 'true');
+      hamburger.classList.add('open');
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('visible');
+      drawer.setAttribute('aria-hidden', 'true');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.classList.remove('open');
+      hamburger.focus();
+    }
+
+    hamburger.addEventListener('click', () => {
+      if(drawer.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
     });
 
-    closeBtn.addEventListener("click", () => {
-      drawer.style.transform = "translateX(-100%)";
+    hamburger.addEventListener('keydown', e => {
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        hamburger.click();
+      }
+    });
+
+    closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+
+    // Close drawer when a nav link is clicked
+    drawer.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', closeDrawer);
     });
   </script>
 
@@ -720,8 +838,18 @@
       document.getElementById('change-amount').textContent = change >= 0 ? change.toFixed(2) : "0.00";
     });
 
+    // Get selected order type Dine In or Take Out
+    function getSelectedOrderType() {
+      const radios = document.getElementsByName('order-type');
+      for (const radio of radios) {
+        if (radio.checked) return radio.value;
+      }
+      return "Dine In"; // Default fallback
+    }
+
     function confirmPayment() {
       const method = document.getElementById('payment-method').value;
+      const orderType = getSelectedOrderType();
       if (method === 'cash') {
           const received = parseFloat(document.getElementById('cash-input').value);
           if (isNaN(received) || received < total) {
@@ -729,10 +857,10 @@
             return;
           }
           const orderNumber = generateOrderNumber();
-          alert("Cash payment confirmed. Change: ₱" + (received - total).toFixed(2) + "\nYour order number is: " + orderNumber);
+          alert("Cash payment confirmed. Change: ₱" + (received - total).toFixed(2) + "\\nOrder Type: " + orderType + "\\nYour order number is: " + orderNumber);
       } else if (method === 'gcash') {
           const orderNumber = generateOrderNumber();
-          alert("GCash payment recorded. Thank you!\nYour order number is: " + orderNumber);
+          alert("GCash payment recorded. Thank you!\\nOrder Type: " + orderType + "\\nYour order number is: " + orderNumber);
       }
       closePaymentModal();
       clearOrders();
@@ -744,3 +872,5 @@
   </script>
 </body>
 </html>
+
+

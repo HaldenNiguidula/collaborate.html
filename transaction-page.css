@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar / Transaction List */
+.sidebar {
+  width: 40%;
+  border-right: 1px solid #ccc;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background-color: #ffce73;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.menu-icon,
+.search-icon {
+  font-size: 20px;
+}
+
+.transaction-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.date-label {
+  background-color: #ffce73;
+  padding: 10px;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+}
+
+.transaction-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
+
+/* Details Panel */
+.details {
+  width: 60%;
+  padding: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.total-price {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.items-box {
+  background-color: #d3d3d3;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}
+
+.subtotal-row {
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 15px 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.reprint {
+  background-color: #ffce73;
+}
+
+.refund {
+  background-color: #a57a4c;
+  color: white;
+}

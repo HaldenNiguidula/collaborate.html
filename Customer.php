@@ -71,37 +71,110 @@
       color: #000000;
     }
 
+    /* Profile Button - style for image button */
+    #profile-btn {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      text-decoration: none;
+    }
+    #profile-btn img {
+      display: block;
+      width: 28px;
+      height: 28px;
+    }
+    #profile-btn:hover img {
+      filter: brightness(0.8);
+    }
+
+    /* Drawer Styles */
+    /* Adjust drawer to the left side */
+    #profile-drawer {
+      display: block; /* Keep block for layout */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #FFD483;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+      z-index: 1000;
+      padding: 20px;
+      transition: transform 0.5s ease, opacity 0.3s ease;
+      transform: translateX(-100%);
+      opacity: 0;
+      pointer-events: none; /* Prevent interactions when hidden */
+    }
+
+    #profile-drawer.open {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto; /* Enable interactions when visible */
+    }
+
+    #drawer-close-btn {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    /* Drawer Login and Logout replaced login button with styled anchor */
+    #drawer-login-btn, #drawer-logout-btn {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #D0AC77;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    #drawer-login-btn:hover, #drawer-logout-btn:hover {
+      background-color: #B38E53;
+      color: white;
+    }
+
     /* Style for Payment Modal/Method */
     .order-controls button {
-      background-color: #007bff; /* Blue color for both buttons */
-      color: white; /* White text color */
-      padding: 10px 20px; /* Adjust padding for a better appearance */
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s ease; /* Smooth transition for background color */
+      transition: background-color 0.3s ease;
     }
 
     /* Style for "Clear All" button */
     .order-controls button:nth-child(1) {
-      background-color: #dc3545; /* Red background for Clear All */
+      background-color: #dc3545;
     }
 
     .order-controls button:nth-child(1):hover {
-      background-color: #c82333; /* Darker red on hover */
+      background-color: #c82333;
     }
 
     /* Style for "Checkout" button */
     .order-controls button:nth-child(2) {
-      background-color: #28a745; /* Green background for Checkout */
+      background-color: #28a745;
     }
 
     .order-controls button:nth-child(2):hover {
-      background-color: #218838; /* Darker green on hover */
+      background-color: #218838;
     }
 
-    /* Order Section Styles */
     section {
       flex: 1;
       padding: 20px;
@@ -111,23 +184,21 @@
       flex-direction: column;
       justify-content: space-between;
       height: 100vh;
-      max-height: 100vh; /* Ensure it doesn't exceed the viewport height */
-      box-sizing: border-box; /* Include padding in height calculation */
+      max-height: 100vh;
+      box-sizing: border-box;
     }
 
-    /* Orders List: Make it scrollable if too much content */
     #order-list {
-      max-height: 60vh; /* Limits the orders list height */
-      overflow-y: auto; /* Allows vertical scrolling if necessary */
-      margin-bottom: 20px; /* Space for the buttons */
+      max-height: 60vh;
+      overflow-y: auto;
+      margin-bottom: 20px;
     }
 
-    /* Order Controls - Make sure it fits properly */
     .order-controls {
       display: flex;
       justify-content: space-between;
-      gap: 10px; /* Small gap between the buttons */
-      margin-top: auto; /* Push it to the bottom */
+      gap: 10px;
+      margin-top: auto;
     }
     .order-controls button {
       padding: 12px 24px;
@@ -136,7 +207,7 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      width: 48%; /* Makes the buttons occupy equal width */
+      width: 48%;
     }
 
     /* Clear All Button */
@@ -162,7 +233,6 @@
       color: black;
     }
 
-    /* Order Entry Styles */
     .order-entry {
       display: flex;
       justify-content: space-between;
@@ -231,7 +301,6 @@
       color: #a71d2a;
     }
 
-    /* Payment Modal */
     #payment-modal {
       display:none;
       position:fixed;
@@ -278,7 +347,6 @@
       font-weight: bold;
     }
 
-    /* Dine In / Take Out Section */
     #order-type-section {
       margin: 15px 0 18px 0;
     }
@@ -293,7 +361,6 @@
       cursor: pointer;
     }
 
-    /* Responsive tweaks for small/mobile screens */
     @media (max-width: 600px) {
       main {
         flex-direction: column;
@@ -321,18 +388,36 @@
         padding: 10px;
         font-size: 14px;
       }
+      #profile-btn img {
+        width: 24px;
+        height: 24px;
+      }
+      #logo-img {
+        max-height: 40px;
+        width: auto;
+      }
+      #profile-drawer {
+        width: 100%;
+      }
+    }
+
+    #logo-img {
+      max-height: 50px;
+      width: auto;
+      object-fit: contain;
     }
   </style>
 </head>
 <body>
-  <!-- Container -->
   <div>
     <header style="display: flex; padding: 10px 0; background: #D0AC77; text-align: center;">
 
-      <!-- Left: Empty to balance layout -->
-      <div style="flex: 1;"></div>
+      <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 20px;">
+        <button id="profile-btn" onclick="handleProfileClick()" aria-label="Profile">
+          <img src="profile-icon.png" alt="Profile Icon" />
+        </button>
+      </div>
 
-      <!-- Center: Navigation Buttons -->
       <div style="display: flex; justify-content: center; margin-top: 5px; flex: 2;">
           <nav style="display: flex; gap: 70px;">
           <button id="btn-a">Hot Coffee</button>
@@ -342,20 +427,20 @@
           </nav>
       </div>
 
-      <!-- Right: Logo -->
       <div style="flex: 1; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-        <div style="font-weight: bold; font-size: 20px;">BREWeb</div>
+        <img id="logo-img" src="logo.png" alt="BREWeb Logo" />
       </div>
 
     </header>
 
-    <!-- Main Content -->
-    <main style="display: flex; height: 100%;">
+    <div id="profile-drawer">
+      <button id="drawer-close-btn" onclick="closeDrawer()">✖</button>
+      <h3>"For Staff/Admin Only"</h3>
+      <a id="drawer-login-btn" href="login.php">Log In/Sign up</a>
+    </div>
 
-      <!-- Items Section -->
+    <main style="display: flex; height: 100%;">
       <section style="flex: 2; padding: 20px;">
-    
-        <!-- Section A -->
         <div id="items-a" class="items-grid">
             <div class="item-box" data-name="Cafe Americano" data-price="120">
                 <div><strong>Cafe Americano</strong></div>
@@ -383,7 +468,6 @@
             </div>
         </div>
         
-        <!-- Section B -->
         <div id="items-b" class="items-grid" style="display: none;">
             <div class="item-box" data-name="Coffee Jelly" data-price="130">
                 <div><strong>Coffee Jelly</strong></div>
@@ -407,7 +491,6 @@
             </div>
         </div>
         
-        <!-- Section C -->
         <div id="items-c" class="items-grid" style="display: none;">
             <div class="item-box" data-name="Red Velvet Latte" data-price="155">
                 <div><strong>Red Velvet Latte</strong></div>
@@ -427,7 +510,6 @@
             </div>
         </div>
         
-        <!-- Section D -->
         <div id="items-d" class="items-grid" style="display: none;">
             <div class="item-box" data-name="Pumpkin Spice Latte" data-price="170">
                 <div><strong>Pumpkin Spice Latte</strong></div>
@@ -442,10 +524,7 @@
                 <div>₱150.00</div>
             </div>
         </div>
-
       </section>
-    
-      <!-- Orders Section -->
       <section style="flex: 1; padding: 20px; border-left: 1px solid #ccc; background-color: #f9f9f9; display: flex; flex-direction: column; justify-content: space-between; height: 90vh;">
         <div>
           <h3 style="background-color: #FFD483; padding: 20px; border-radius: 5px;">Orders</h3>
@@ -463,12 +542,10 @@
         </div>
       </section>
 
-      <!-- Payment Modal -->
       <div id="payment-modal">
         <div>
           <h3>Select Payment Method</h3>
 
-          <!-- Dine In or Take Out -->
           <div id="order-type-section" role="radiogroup" aria-label="Select Order Type">
             <label>
               <input type="radio" name="order-type" value="Dine In" checked />
@@ -505,11 +582,23 @@
       </div>
 
     </main>      
-
   </div>
 
   <script>
-    // Navigation Buttons Show/Hide
+    // Profile button click handler toggles drawer
+    function handleProfileClick() {
+      const drawer = document.getElementById('profile-drawer');
+      if (drawer.classList.contains('open')) {
+        drawer.classList.remove('open');
+      } else {
+        drawer.classList.add('open');
+      }
+    }
+
+    function closeDrawer() {
+      document.getElementById('profile-drawer').classList.remove('open');
+    }
+
     const sections = {
       'btn-a': 'items-a',
       'btn-b': 'items-b',
@@ -527,27 +616,24 @@
     });
 
     let total = 0;
-    const orders = {}; // Track items and their quantities
-    let orderNumberCount = 0; // Track order number count for transactions
+    const orders = {};
+    let orderNumberCount = 0;
 
     function generateOrderNumber() {
       orderNumberCount++;
       return 'ORD' + String(orderNumberCount).padStart(4, '0');
     }
 
-    // Add item click handler
     document.querySelectorAll(".item-box").forEach(box => {
       box.addEventListener("click", () => {
         const name = box.getAttribute("data-name");
         const price = parseFloat(box.getAttribute("data-price"));
 
         if (orders[name]) {
-          // Increase quantity and price
           orders[name].quantity++;
           orders[name].totalPrice += price;
           updateOrderItem(name);
         } else {
-          // New order entry
           orders[name] = {
             quantity: 1,
             price: price,
@@ -562,20 +648,13 @@
 
     function addNewOrderItem(name) {
       const orderList = document.getElementById("order-list");
-
       const orderItem = document.createElement("div");
       orderItem.classList.add("order-entry");
-
-      // Name
       const itemName = document.createElement("span");
       itemName.classList.add("order-name");
       itemName.textContent = name;
-
-      // Quantity controls container
       const quantityControls = document.createElement("div");
       quantityControls.classList.add("quantity-controls");
-
-      // Minus button
       const minusBtn = document.createElement("button");
       minusBtn.textContent = "−";
       minusBtn.title = "Decrease quantity";
@@ -588,20 +667,15 @@
           updateOrderItem(name);
           updateTotal();
         } else {
-          // Remove item if quantity reaches 0 or 1 and minus is clicked
           total -= orders[name].totalPrice;
           updateTotal();
           orderItem.remove();
           delete orders[name];
         }
       };
-
-      // Quantity display
       const quantityDisplay = document.createElement("span");
       quantityDisplay.classList.add("item-quantity");
       quantityDisplay.textContent = `x${orders[name].quantity}`;
-
-      // Plus button
       const plusBtn = document.createElement("button");
       plusBtn.textContent = "+";
       plusBtn.title = "Increase quantity";
@@ -613,17 +687,12 @@
         updateOrderItem(name);
         updateTotal();
       };
-
       quantityControls.appendChild(minusBtn);
       quantityControls.appendChild(quantityDisplay);
       quantityControls.appendChild(plusBtn);
-
-      // Price
       const itemPrice = document.createElement("span");
       itemPrice.classList.add("item-price");
       itemPrice.textContent = `₱${orders[name].totalPrice.toFixed(2)}`;
-
-      // Remove button
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-btn";
       removeBtn.textContent = "❌";
@@ -634,24 +703,19 @@
         orderItem.remove();
         delete orders[name];
       };
-
       orderItem.appendChild(itemName);
       orderItem.appendChild(quantityControls);
       orderItem.appendChild(itemPrice);
       orderItem.appendChild(removeBtn);
-
       orderList.appendChild(orderItem);
-
       orders[name].orderItem = orderItem;
     }
 
     function updateOrderItem(name) {
       const item = orders[name];
       const orderItem = item.orderItem;
-
       const quantityDisplay = orderItem.querySelector(".item-quantity");
       const itemPrice = orderItem.querySelector(".item-price");
-
       quantityDisplay.textContent = `x${item.quantity}`;
       itemPrice.textContent = `₱${item.totalPrice.toFixed(2)}`;
     }
@@ -669,9 +733,7 @@
       }
       updateTotal();
     }
-  </script>
 
-  <script>
     function checkout() {
       if (total <= 0) {
         alert("No orders to checkout.");
@@ -699,13 +761,12 @@
       document.getElementById('change-amount').textContent = change >= 0 ? change.toFixed(2) : "0.00";
     });
 
-    // Get selected order type Dine In or Take Out
     function getSelectedOrderType() {
       const radios = document.getElementsByName('order-type');
       for (const radio of radios) {
         if (radio.checked) return radio.value;
       }
-      return "Dine In"; // Default fallback
+      return "Dine In";
     }
 
     function confirmPayment() {
@@ -733,3 +794,4 @@
   </script>
 </body>
 </html>
+
