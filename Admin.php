@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BREWeb</title>
+  <title>BREWeb with Manage Items Button in Header</title>
   <style>
     html, body {
       height: 100%;
@@ -43,18 +43,24 @@
       user-select: none;
       box-shadow: 0 2px 6px rgba(0,0,0,0.12);
       transition: background-color 0.2s ease;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .item-box:hover {
       background: #bbb;
     }
 
-    aside h2 {
-      text-align: center;
+    /* Styles for Navigation Buttons (including Manage Items) */
+    header nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
     }
 
-    /*Styles for Navigation*/
-    button {
+    header nav button {
       background-color: #FFD483; /* Light orange-yellow */
       color: #000000;
       font-weight: bold;
@@ -64,23 +70,30 @@
       cursor: pointer;
       user-select: none;
       transition: background-color 0.3s ease;
+      font-size: 16px;
+      white-space: nowrap;
     }
 
-    button:hover {
+    header nav button:hover {
       background-color: #e6b74f;
       color: #000000;
     }
 
-    /* Style for Payment Modal/Method */
-    .order-controls button {
-      background-color: #007bff; /* Blue color for both buttons */
-      color: white; /* White text color */
-      padding: 10px 20px; /* Adjust padding for a better appearance */
-      border: none;
+    /* Distinct style for Manage Items button in header */
+    .manage-items-btn-header {
+      background-color:rgb(4, 179, 4);
+      color: black;
+      font-weight: bold;
       border-radius: 8px;
-      cursor: pointer;
+      padding: 10px 22px;
       font-size: 16px;
-      transition: background-color 0.3s ease; /* Smooth transition for background color */
+      box-shadow: 0 2px 6px rgba(179, 119, 0, 0.7);
+      transition: background-color 0.3s ease;
+      white-space: nowrap;
+    }
+    .manage-items-btn-header:hover {
+      background-color:rgb(5, 149, 5);
+      color: black;
     }
 
     /* Order Section Styles */
@@ -93,24 +106,23 @@
       flex-direction: column;
       justify-content: space-between;
       height: 100vh;
-      max-height: 100vh; /* Ensure it doesn't exceed the viewport height */
-      box-sizing: border-box; /* Include padding in height calculation */
+      max-height: 100vh;
+      box-sizing: border-box;
     }
 
-    /* Orders List: Make it scrollable if too much content */
     #order-list {
-      max-height: 60vh; /* Limits the orders list height */
-      overflow-y: auto; /* Allows vertical scrolling if necessary */
-      margin-bottom: 20px; /* Space for the buttons */
+      max-height: 60vh;
+      overflow-y: auto;
+      margin-bottom: 20px;
     }
 
-    /* Order Controls - Make sure it fits properly */
     .order-controls {
       display: flex;
       justify-content: space-between;
-      gap: 10px; /* Small gap between the buttons */
-      margin-top: auto; /* Push it to the bottom */
+      gap: 10px;
+      margin-top: auto;
     }
+    
     .order-controls button {
       padding: 12px 24px;
       font-size: 16px;
@@ -118,33 +130,26 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      width: 48%; /* Makes the buttons occupy equal width */
+      width: 48%;
     }
-
-    /* Clear All Button */
     .order-controls button:nth-child(1) {
       background-color: #FFD483;
       color: black;
     }
-
     .order-controls button:nth-child(1):hover {
       background-color: #FFD483;
       color: black;
     }
-
-    /* Checkout Button */
     .order-controls button:nth-child(2) {
       background-color: #D0AC77;
       color: black;
       font-weight: bold;
     }
-
     .order-controls button:nth-child(2):hover {
       background-color: #D0AC77;
       color: black;
     }
 
-    /* Order Entry Styles */
     .order-entry {
       display: flex;
       justify-content: space-between;
@@ -240,8 +245,7 @@
       margin-top:0;
       margin-bottom: 15px;
     }
-    #payment-modal select,
-    #payment-modal input[type="number"] {
+    #payment-modal select, #payment-modal input[type="number"] {
       width: 100%;
       padding: 8px 10px;
       font-size: 16px;
@@ -293,10 +297,10 @@
         margin-top: 12px;
       }
       header nav {
-        gap: 15px;
+        gap: 12px;
       }
-      button {
-        padding: 8px 12px;
+      header nav button {
+        padding: 8px 14px;
         font-size: 14px;
       }
       .order-controls button {
@@ -322,7 +326,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 240px;
+      width: 280px;
       height: 100vh;
       background-color: #FFD483;
       box-shadow: 2px 0 6px rgba(0,0,0,0.3);
@@ -331,18 +335,21 @@
       z-index: 1500;
       padding: 20px;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
     }
     #side-drawer.open {
       transform: translateX(0);
     }
-    #side-drawer nav {
-      margin-top: 20px;
+    #side-drawer nav.main-nav {
       display: flex;
       flex-direction: column;
       gap: 12px;
       font-weight: 600;
+      flex-grow: 1;
+      overflow-y: auto;
     }
-    #side-drawer nav a {
+    #side-drawer nav.main-nav a {
       color: #333;
       text-decoration: none;
       padding: 8px 10px;
@@ -350,10 +357,36 @@
       user-select: none;
       transition: background-color 0.2s ease;
       cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
     }
-    #side-drawer nav a:hover {
+    #side-drawer nav.main-nav a:hover {
       background-color: #e6b74f;
       color: black;
+    }
+    #side-drawer nav.bottom-nav {
+      font-weight: 600;
+      margin-top: auto;
+      border-top: 1px solid #b37700;
+      padding-top: 12px;
+    }
+    #side-drawer nav.bottom-nav a {
+      color: #b30000;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      user-select: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
+      font-weight: 700;
+    }
+    #side-drawer nav.bottom-nav a:hover {
+      background-color: #cc0000;
+      color: white;
     }
     #close-drawer {
       background: none;
@@ -390,13 +423,128 @@
     header .hamburger.open {
       color: #b37700;
     }
+
+    /* Manage Items Modal */
+    #manage-items-modal {
+      display:none;
+      position: fixed;
+      z-index: 3000;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #manage-items-modal > div {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+    #manage-items-modal h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #b37700;
+    }
+
+    #manage-items-list {
+      flex-grow: 1;
+      margin-bottom: 20px;
+      overflow-y: auto;
+    }
+    .manage-item-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .manage-item-row input[type="text"],
+    .manage-item-row input[type="number"],
+    .manage-item-row select {
+      padding: 6px 10px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      flex-grow: 1;
+      box-sizing: border-box;
+    }
+    .manage-item-row input[type="number"] {
+      max-width: 100px;
+    }
+    .manage-item-row select {
+      max-width: 140px;
+    }
+    .manage-item-row button.delete-item-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+    }
+    .manage-item-row button.delete-item-btn:hover {
+      background-color: #a71d2a;
+    }
+    #add-item-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+    #add-item-btn:hover {
+      background-color: #1e7e34;
+    }
+
+    /* Manage modal buttons */
+    .manage-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+    .manage-actions button {
+      background-color: #D0AC77;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .manage-actions button:hover {
+      background-color: #b37a2f;
+    }
+    .manage-actions button.cancel-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+    .manage-actions button.cancel-btn:hover {
+      background-color: #a71d2a;
+    }
   </style>
 </head>
 <body>
   <!-- Container -->
   <div>
     <header style="display: flex; padding: 10px 0; background: #D0AC77; text-align: center; align-items: center;">
-
       <!-- Left: Hamburger -->
       <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 20px;">
         <span class="hamburger" role="button" aria-label="Toggle menu" tabindex="0" aria-expanded="false">☰</span>
@@ -404,12 +552,13 @@
 
       <!-- Center: Navigation Buttons -->
       <div style="display: flex; justify-content: center; margin-top: 5px;">
-          <nav style="display: flex; gap: 70px;">
+        <nav role="navigation" aria-label="Menu Categories">
           <button id="btn-a">Hot Coffee</button>
           <button id="btn-b">Iced Coffee</button>
           <button id="btn-c">Non Coffee</button>
           <button id="btn-d">Pastries</button>
-          </nav>
+          <button class="manage-items-btn-header" id="manage-items-header-btn">Manage Items</button>
+        </nav>
       </div>
 
       <!-- Right: Logo as Image -->
@@ -423,11 +572,14 @@
       <button id="close-drawer" aria-label="Close menu">✖ Options</button>
 
       <!-- Drawer Content -->
-      <nav>
-          <a href="homepage.php">Log In/Out</a>
+      <nav class="main-nav">
           <a href="#">Sales Report</a>
           <a href="transaction-page.php">Transaction</a>
           <a href="cash-drawer.php">Cash Drawer</a>
+      </nav>
+
+      <nav class="bottom-nav" aria-label="User Identity">
+          <a href="homepage.php">Log Out</a>
       </nav>
     </div>
 
@@ -436,98 +588,11 @@
 
     <!-- Main Content -->
     <main style="display: flex; height: 100%;">
-
       <!-- Items Section -->
       <section style="flex: 2; padding: 20px;">
-    
-        <!-- Section A -->
-        <div id="items-a" class="items-grid">
-            <div class="item-box" data-name="Cafe Americano" data-price="120">
-                <div><strong>Cafe Americano</strong></div>
-                <div>₱120.00</div>
-            </div>
-            <div class="item-box" data-name="Cafe Mocha" data-price="140">
-                <div><strong>Cafe Mocha</strong></div>
-                <div>₱140.00</div>
-            </div>
-            <div class="item-box" data-name="Caramel Macchiato" data-price="160">
-                <div><strong>Caramel Macchiato</strong></div>
-                <div>₱160.00</div>
-            </div>
-            <div class="item-box" data-name="Cafe Latte" data-price="130">
-                <div><strong>Cafe Latte</strong></div>
-                <div>₱130.00</div>
-            </div>
-            <div class="item-box" data-name="Flat White" data-price="125">
-                <div><strong>Flat White</strong></div>
-                <div>₱125.00</div>
-            </div>
-            <div class="item-box" data-name="Espresso" data-price="110">
-                <div><strong>Espresso</strong></div>
-                <div>₱110.00</div>
-            </div>
+        <div id="items-grid" class="items-grid" aria-live="polite" aria-label="Menu items">
+          <!-- Items rendered by JS -->
         </div>
-        
-        <!-- Section B -->
-        <div id="items-b" class="items-grid" style="display: none;">
-            <div class="item-box" data-name="Coffee Jelly" data-price="130">
-                <div><strong>Coffee Jelly</strong></div>
-                <div>₱130.00</div>
-            </div>
-            <div class="item-box" data-name="Dark Mocha" data-price="150">
-                <div><strong>Dark Mocha</strong></div>
-                <div>₱150.00</div>
-            </div>
-            <div class="item-box" data-name="Dirty Matcha" data-price="145">
-                <div><strong>Dirty Matcha</strong></div>
-                <div>₱145.00</div>
-            </div>
-            <div class="item-box" data-name="Iced Americano" data-price="120">
-                <div><strong>Iced Americano</strong></div>
-                <div>₱120.00</div>
-            </div>
-            <div class="item-box" data-name="Iced Latte" data-price="130">
-                <div><strong>Iced Latte</strong></div>
-                <div>₱130.00</div>
-            </div>
-        </div>
-        
-        <!-- Section C -->
-        <div id="items-c" class="items-grid" style="display: none;">
-            <div class="item-box" data-name="Red Velvet Latte" data-price="155">
-                <div><strong>Red Velvet Latte</strong></div>
-                <div>₱155.00</div>
-            </div>
-            <div class="item-box" data-name="Salted Caramel" data-price="160">
-                <div><strong>Salted Caramel</strong></div>
-                <div>₱160.00</div>
-            </div>
-            <div class="item-box" data-name="Sea Salt Latte" data-price="150">
-                <div><strong>Sea Salt Latte</strong></div>
-                <div>₱150.00</div>
-            </div>
-            <div class="item-box" data-name="Toasted Vanilla" data-price="140">
-                <div><strong>Toasted Vanilla</strong></div>
-                <div>₱140.00</div>
-            </div>
-        </div>
-        
-        <!-- Section D -->
-        <div id="items-d" class="items-grid" style="display: none;">
-            <div class="item-box" data-name="Pumpkin Spice Latte" data-price="170">
-                <div><strong>Pumpkin Spice Latte</strong></div>
-                <div>₱170.00</div>
-            </div>
-            <div class="item-box" data-name="Toffee Nut Crunch" data-price="165">
-                <div><strong>Toffee Nut Crunch</strong></div>
-                <div>₱165.00</div>
-            </div>
-            <div class="item-box" data-name="Cinnamon Roll Latte" data-price="150">
-                <div><strong>Cinnamon Roll Latte</strong></div>
-                <div>₱150.00</div>
-            </div>
-        </div>
-
       </section>
     
       <!-- Orders Section -->
@@ -549,11 +614,9 @@
       </section>
 
       <!-- Payment Modal -->
-      <div id="payment-modal">
+      <div id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title" tabindex="-1">
         <div>
-          <h3>Select Payment Method</h3>
-
-          <!-- Dine In or Take Out -->
+          <h3 id="payment-modal-title">Select Payment Method</h3>
           <div id="order-type-section" role="radiogroup" aria-label="Select Order Type">
             <label>
               <input type="radio" name="order-type" value="Dine In" checked />
@@ -564,12 +627,10 @@
               Take Out
             </label>
           </div>
-          
           <select id="payment-method" aria-label="Select Payment Method">
             <option value="cash">Cash</option>
             <option value="gcash">GCash</option>
           </select>
-
           <div id="cash-section">
             <p>Total Due: ₱<span id="payment-total">0.00</span></p>
             <label>Received Cash:
@@ -577,11 +638,9 @@
             </label>
             <p>Change: ₱<span id="change-amount">0.00</span></p>
           </div>
-
           <div id="gcash-section" style="display:none;">
             <p>Please confirm payment via GCash on your mobile device.</p>
           </div>
-
           <div style="margin-top:20px; text-align:right;">
             <button onclick="closePaymentModal()">Cancel</button>
             <button onclick="confirmPayment()">Confirm</button>
@@ -589,167 +648,188 @@
         </div>
       </div>
 
+      <!-- Manage Items Modal -->
+      <div id="manage-items-modal" role="dialog" aria-modal="true" aria-labelledby="manage-items-title" tabindex="-1">
+        <div>
+          <h2 id="manage-items-title">Manage Menu Items</h2>
+          <button id="add-item-btn" aria-label="Add new menu item">+ Add New Item</button>
+          <div id="manage-items-list" role="list" aria-live="polite" aria-label="Menu items management list">
+          </div>
+          <div class="manage-actions">
+            <button id="save-items-btn">Save Changes</button>
+            <button id="cancel-items-btn" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
     </main>      
-
   </div>
 
   <script>
-    // Navigation Buttons Show/Hide
-    const sections = {
-      'btn-a': 'items-a',
-      'btn-b': 'items-b',
-      'btn-c': 'items-c',
-      'btn-d': 'items-d'
+    // Initial Items & Variables
+    const defaultItems = [
+      { id: 'a1', name: "Cafe Americano", price: 120, category:'a' },
+      { id: 'a2', name: "Cafe Mocha", price: 140, category:'a' },
+      { id: 'a3', name: "Caramel Macchiato", price: 160, category:'a' },
+      { id: 'a4', name: "Cafe Latte", price: 130, category:'a' },
+      { id: 'a5', name: "Flat White", price: 125, category:'a' },
+      { id: 'a6', name: "Espresso", price: 110, category:'a' },
+      { id: 'b1', name: "Coffee Jelly", price: 130, category:'b' },
+      { id: 'b2', name: "Dark Mocha", price: 150, category:'b' },
+      { id: 'b3', name: "Dirty Matcha", price: 145, category:'b' },
+      { id: 'b4', name: "Iced Americano", price: 120, category:'b' },
+      { id: 'b5', name: "Iced Latte", price: 130, category:'b' },
+      { id: 'c1', name: "Red Velvet Latte", price: 155, category:'c' },
+      { id: 'c2', name: "Salted Caramel", price: 160, category:'c' },
+      { id: 'c3', name: "Sea Salt Latte", price: 150, category:'c' },
+      { id: 'c4', name: "Toasted Vanilla", price: 140, category:'c' },
+      { id: 'd1', name: "Pumpkin Spice Latte", price: 170, category:'d' },
+      { id: 'd2', name: "Toffee Nut Crunch", price: 165, category:'d' },
+      { id: 'd3', name: "Cinnamon Roll Latte", price: 150, category:'d' }
+    ];
+    const categories = {
+      'btn-a': 'a',
+      'btn-b': 'b',
+      'btn-c': 'c',
+      'btn-d': 'd'
+    };
+    let currentCategory = 'a';
+    let items = [];
+    const orders = {};
+    let total = 0;
+    let orderNumberCount = 0;
+
+    window.onload = () => {
+      loadItems();
+      setupCategoryButtons();
+      renderItemsGrid();
+      setupSideDrawer();
+      setupManageItems();
+      setupPaymentModal();
+      updateTotal();
     };
 
-    Object.keys(sections).forEach(btnId => {
-      document.getElementById(btnId).addEventListener('click', () => {
-        Object.values(sections).forEach(id => {
-          document.getElementById(id).style.display = 'none';
-        });
-        document.getElementById(sections[btnId]).style.display = 'grid';
-      });
-    });
-
-    // Simplified Side Drawer Logic
-    const drawer = document.getElementById('side-drawer');
-    const backdrop = document.getElementById('drawer-backdrop');
-    const hamburger = document.querySelector('header .hamburger');
-    const closeBtn = document.getElementById('close-drawer');
-
-    function openDrawer() {
-      drawer.classList.add('open');
-      backdrop.classList.add('visible');
-      drawer.setAttribute('aria-hidden', 'false');
-      hamburger.setAttribute('aria-expanded', 'true');
-      hamburger.classList.add('open');
-    }
-
-    function closeDrawer() {
-      drawer.classList.remove('open');
-      backdrop.classList.remove('visible');
-      drawer.setAttribute('aria-hidden', 'true');
-      hamburger.setAttribute('aria-expanded', 'false');
-      hamburger.classList.remove('open');
-      hamburger.focus();
-    }
-
-    hamburger.addEventListener('click', () => {
-      if(drawer.classList.contains('open')) {
-        closeDrawer();
-      } else {
-        openDrawer();
-      }
-    });
-
-    hamburger.addEventListener('keydown', e => {
-      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-        e.preventDefault();
-        hamburger.click();
-      }
-    });
-
-    closeBtn.addEventListener('click', closeDrawer);
-    backdrop.addEventListener('click', closeDrawer);
-
-    document.addEventListener('keydown', e => {
-      if(e.key === 'Escape' && drawer.classList.contains('open')) {
-        closeDrawer();
-      }
-    });
-
-    // Close drawer when a nav link is clicked
-    drawer.querySelectorAll('nav a').forEach(link => {
-      link.addEventListener('click', closeDrawer);
-    });
-  </script>
-
-  <script>
-    let total = 0;
-    const orders = {}; // Track items and their quantities
-    let orderNumberCount = 0; // Track order number count for transactions
-
-    function generateOrderNumber() {
-      orderNumberCount++;
-      return 'ORD' + String(orderNumberCount).padStart(4, '0');
-    }
-
-    // Add item click handler
-    document.querySelectorAll(".item-box").forEach(box => {
-      box.addEventListener("click", () => {
-        const name = box.getAttribute("data-name");
-        const price = parseFloat(box.getAttribute("data-price"));
-
-        if (orders[name]) {
-          // Increase quantity and price
-          orders[name].quantity++;
-          orders[name].totalPrice += price;
-          updateOrderItem(name);
-        } else {
-          // New order entry
-          orders[name] = {
-            quantity: 1,
-            price: price,
-            totalPrice: price
-          };
-          addNewOrderItem(name);
+    function loadItems() {
+      const stored = localStorage.getItem('menuItems');
+      if (stored) {
+        try {
+          items = JSON.parse(stored);
+          if (!Array.isArray(items)) throw new Error();
+        } catch(e) {
+          items = [...defaultItems];
         }
-        total += price;
-        updateTotal();
+      } else {
+        items = [...defaultItems];
+      }
+    }
+    function saveItems() {
+      localStorage.setItem('menuItems', JSON.stringify(items));
+    }
+    function setupCategoryButtons() {
+      Object.keys(categories).forEach(btnId => {
+        document.getElementById(btnId).addEventListener('click', () => {
+          currentCategory = categories[btnId];
+          renderItemsGrid();
+        });
       });
-    });
-
-    function addNewOrderItem(name) {
+      // Setup Manage Items button in header
+      const manageBtnHeader = document.getElementById('manage-items-header-btn');
+      manageBtnHeader.addEventListener('click', () => {
+        openManageItemsModal();
+      });
+    }
+    function renderItemsGrid() {
+      const container = document.getElementById('items-grid');
+      container.innerHTML = '';
+      const filteredItems = items.filter(i => i.category === currentCategory);
+      if (filteredItems.length === 0) {
+        const noItemsMsg = document.createElement('div');
+        noItemsMsg.textContent = "No items in this category.";
+        noItemsMsg.style.fontStyle = 'italic';
+        noItemsMsg.style.gridColumn = 'span 3';
+        container.appendChild(noItemsMsg);
+        return;
+      }
+      filteredItems.forEach(item => {
+        const box = document.createElement('div');
+        box.className = 'item-box';
+        box.setAttribute('data-id', item.id);
+        box.setAttribute('data-name', item.name);
+        box.setAttribute('data-price', item.price.toFixed(2));
+        box.tabIndex = 0;
+        box.innerHTML = `<div><strong>${item.name}</strong></div><div>₱${item.price.toFixed(2)}</div>`;
+        box.addEventListener('click', () => addItemToOrder(item.id));
+        box.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            addItemToOrder(item.id);
+          }
+        });
+        container.appendChild(box);
+      });
+    }
+    function addItemToOrder(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+      if (orders[id]) {
+        orders[id].quantity++;
+        orders[id].totalPrice += item.price;
+        updateOrderItem(id);
+      } else {
+        orders[id] = {
+          quantity: 1,
+          price: item.price,
+          totalPrice: item.price
+        };
+        addNewOrderItem(id);
+      }
+      total += item.price;
+      updateTotal();
+    }
+    function addNewOrderItem(id) {
       const orderList = document.getElementById("order-list");
+      const item = orders[id];
 
       const orderItem = document.createElement("div");
       orderItem.classList.add("order-entry");
 
-      // Name
       const itemName = document.createElement("span");
       itemName.classList.add("order-name");
-      itemName.textContent = name;
+      const menuItem = items.find(i => i.id === id);
+      itemName.textContent = menuItem ? menuItem.name : "";
 
-      // Quantity controls container
       const quantityControls = document.createElement("div");
       quantityControls.classList.add("quantity-controls");
 
-      // Minus button
       const minusBtn = document.createElement("button");
       minusBtn.textContent = "−";
       minusBtn.title = "Decrease quantity";
       minusBtn.onclick = () => {
-        const item = orders[name];
-        if (item.quantity > 1) {
+        if(item.quantity > 1) {
           item.quantity--;
           item.totalPrice -= item.price;
           total -= item.price;
-          updateOrderItem(name);
+          updateOrderItem(id);
           updateTotal();
         } else {
-          // Remove item if quantity reaches 0 or 1 and minus is clicked
-          total -= orders[name].totalPrice;
+          total -= item.totalPrice;
           updateTotal();
           orderItem.remove();
-          delete orders[name];
+          delete orders[id];
         }
       };
 
-      // Quantity display
       const quantityDisplay = document.createElement("span");
       quantityDisplay.classList.add("item-quantity");
-      quantityDisplay.textContent = `x${orders[name].quantity}`;
+      quantityDisplay.textContent = `x${item.quantity}`;
 
-      // Plus button
       const plusBtn = document.createElement("button");
       plusBtn.textContent = "+";
       plusBtn.title = "Increase quantity";
       plusBtn.onclick = () => {
-        const item = orders[name];
         item.quantity++;
         item.totalPrice += item.price;
         total += item.price;
-        updateOrderItem(name);
+        updateOrderItem(id);
         updateTotal();
       };
 
@@ -757,21 +837,19 @@
       quantityControls.appendChild(quantityDisplay);
       quantityControls.appendChild(plusBtn);
 
-      // Price
       const itemPrice = document.createElement("span");
       itemPrice.classList.add("item-price");
-      itemPrice.textContent = `₱${orders[name].totalPrice.toFixed(2)}`;
+      itemPrice.textContent = `₱${item.totalPrice.toFixed(2)}`;
 
-      // Remove button
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-btn";
       removeBtn.textContent = "❌";
       removeBtn.title = "Remove item";
       removeBtn.onclick = () => {
-        total -= orders[name].totalPrice;
+        total -= item.totalPrice;
         updateTotal();
         orderItem.remove();
-        delete orders[name];
+        delete orders[id];
       };
 
       orderItem.appendChild(itemName);
@@ -781,24 +859,20 @@
 
       orderList.appendChild(orderItem);
 
-      orders[name].orderItem = orderItem;
+      orders[id].orderItem = orderItem;
     }
-
-    function updateOrderItem(name) {
-      const item = orders[name];
+    function updateOrderItem(id) {
+      const item = orders[id];
+      if(!item || !item.orderItem) return;
       const orderItem = item.orderItem;
-
       const quantityDisplay = orderItem.querySelector(".item-quantity");
       const itemPrice = orderItem.querySelector(".item-price");
-
       quantityDisplay.textContent = `x${item.quantity}`;
       itemPrice.textContent = `₱${item.totalPrice.toFixed(2)}`;
     }
-
     function updateTotal() {
       document.getElementById("order-total").textContent = total.toFixed(2);
     }
-
     function clearOrders() {
       const orderList = document.getElementById("order-list");
       orderList.innerHTML = "";
@@ -808,9 +882,183 @@
       }
       updateTotal();
     }
-  </script>
+    function setupSideDrawer() {
+      const hamburger = document.querySelector('.hamburger');
+      const sideDrawer = document.getElementById('side-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      const closeBtn = document.getElementById('close-drawer');
 
-  <script>
+      hamburger.addEventListener('click', () => {
+        sideDrawer.classList.add('open');
+        backdrop.classList.add('visible');
+        hamburger.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        sideDrawer.setAttribute('aria-hidden', 'false');
+      });
+
+      const closeDrawer = () => {
+        sideDrawer.classList.remove('open');
+        backdrop.classList.remove('visible');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        sideDrawer.setAttribute('aria-hidden', 'true');
+      };
+
+      closeBtn.addEventListener('click', closeDrawer);
+      backdrop.addEventListener('click', closeDrawer);
+      document.addEventListener('keydown', e => {
+        if(e.key === 'Escape' && sideDrawer.classList.contains('open')) {
+          closeDrawer();
+        }
+      });
+      sideDrawer.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', closeDrawer);
+      });
+    }
+    function setupManageItems() {
+      const modal = document.getElementById('manage-items-modal');
+      const addBtn = document.getElementById('add-item-btn');
+      const listContainer = document.getElementById('manage-items-list');
+      const saveBtn = document.getElementById('save-items-btn');
+      const cancelBtn = document.getElementById('cancel-items-btn');
+
+      window.openManageItemsModal = function() {
+        renderManageItemsList();
+        modal.style.display = 'flex';
+        modal.focus();
+      };
+      cancelBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+      addBtn.addEventListener('click', () => {
+        addManageItemRow({ id: generateId(), name: '', price: 0, category: 'a' }, true);
+      });
+      saveBtn.addEventListener('click', () => {
+        const updatedItems = [];
+        let valid = true;
+        const rows = listContainer.querySelectorAll('.manage-item-row');
+        rows.forEach(row => {
+          const id = row.getAttribute('data-id');
+          const nameInput = row.querySelector('input.name-input');
+          const priceInput = row.querySelector('input.price-input');
+          const categorySelect = row.querySelector('select.category-select');
+          const name = nameInput.value.trim();
+          const price = parseFloat(priceInput.value);
+          const category = categorySelect.value;
+          if (!name) {
+            alert("Item name cannot be empty.");
+            valid = false;
+            return;
+          }
+          if (isNaN(price) || price < 0) {
+            alert("Price must be a valid non-negative number.");
+            valid = false;
+            return;
+          }
+          updatedItems.push({ id, name, price, category });
+        });
+        if(!valid) return;
+        items = updatedItems;
+        saveItems();
+        modal.style.display = 'none';
+        renderItemsGrid();
+        clearOrders();
+      });
+    }
+    function renderManageItemsList() {
+      const container = document.getElementById('manage-items-list');
+      container.innerHTML = '';
+      items.forEach(item => {
+        addManageItemRow(item, false);
+      });
+    }
+    function addManageItemRow(item, isNew) {
+      const container = document.getElementById('manage-items-list');
+      const row = document.createElement('div');
+      row.className = 'manage-item-row';
+      row.setAttribute('data-id', item.id);
+
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'name-input';
+      nameInput.value = item.name;
+      nameInput.placeholder = 'Item Name';
+      nameInput.setAttribute('aria-label', 'Item Name');
+
+      const priceInput = document.createElement('input');
+      priceInput.type = 'number';
+      priceInput.className = 'price-input';
+      priceInput.min = 0;
+      priceInput.step = 0.01;
+      priceInput.value = item.price;
+      priceInput.placeholder = 'Price';
+      priceInput.setAttribute('aria-label', 'Price');
+
+      const categorySelect = document.createElement('select');
+      categorySelect.className = 'category-select';
+      categorySelect.setAttribute('aria-label', 'Item Category');
+      const optionNames = {
+        'a': 'Hot Coffee',
+        'b': 'Iced Coffee',
+        'c': 'Non Coffee',
+        'd': 'Pastries'
+      };
+      for (const key in optionNames) {
+        let opt = document.createElement('option');
+        opt.value = key;
+        opt.textContent = optionNames[key];
+        if (item.category === key) {
+          opt.selected = true;
+        }
+        categorySelect.appendChild(opt);
+      }
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-item-btn';
+      deleteBtn.title = "Delete Item";
+      deleteBtn.textContent = '🗑️';
+      deleteBtn.addEventListener('click', () => {
+        row.remove();
+      });
+
+      row.appendChild(nameInput);
+      row.appendChild(priceInput);
+      row.appendChild(categorySelect);
+      row.appendChild(deleteBtn);
+
+      container.appendChild(row);
+
+      if(isNew) {
+        nameInput.focus();
+      }
+    }
+    function generateId() {
+      return 'id-' + Math.random().toString(36).substr(2, 9);
+    }
+    function setupPaymentModal() {
+      const paymentModal = document.getElementById('payment-modal');
+      const paymentMethodSelect = document.getElementById('payment-method');
+      const cashSection = document.getElementById('cash-section');
+      const gcashSection = document.getElementById('gcash-section');
+      const cashInput = document.getElementById('cash-input');
+      const changeAmount = document.getElementById('change-amount');
+
+      paymentMethodSelect.addEventListener('change', () => {
+        if(paymentMethodSelect.value === 'cash') {
+          cashSection.style.display = "block";
+          gcashSection.style.display = "none";
+        } else {
+          cashSection.style.display = "none";
+          gcashSection.style.display = "block";
+        }
+      });
+
+      cashInput.addEventListener('input', () => {
+        const received = parseFloat(cashInput.value);
+        const change = received - total;
+        changeAmount.textContent = change >= 0 ? change.toFixed(2) : "0.00";
+      });
+    }
     function checkout() {
       if (total <= 0) {
         alert("No orders to checkout.");
@@ -821,32 +1069,23 @@
       document.getElementById('cash-input').value = '';
       document.getElementById('change-amount').textContent = '0.00';
       document.getElementById('payment-method').value = 'cash';
-      updatePaymentMethodView();
+      document.getElementById('cash-section').style.display = 'block';
+      document.getElementById('gcash-section').style.display = 'none';
     }
-
-    document.getElementById('payment-method').addEventListener('change', updatePaymentMethodView);
-
-    function updatePaymentMethodView() {
-      const method = document.getElementById('payment-method').value;
-      document.getElementById('cash-section').style.display = method === 'cash' ? 'block' : 'none';
-      document.getElementById('gcash-section').style.display = method === 'gcash' ? 'block' : 'none';
+    function closePaymentModal() {
+      document.getElementById('payment-modal').style.display = 'none';
     }
-
-    document.getElementById('cash-input').addEventListener('input', () => {
-      const received = parseFloat(document.getElementById('cash-input').value);
-      const change = received - total;
-      document.getElementById('change-amount').textContent = change >= 0 ? change.toFixed(2) : "0.00";
-    });
-
-    // Get selected order type Dine In or Take Out
     function getSelectedOrderType() {
       const radios = document.getElementsByName('order-type');
       for (const radio of radios) {
         if (radio.checked) return radio.value;
       }
-      return "Dine In"; // Default fallback
+      return "Dine In";
     }
-
+    function generateOrderNumber() {
+      orderNumberCount++;
+      return 'ORD' + String(orderNumberCount).padStart(4, '0');
+    }
     function confirmPayment() {
       const method = document.getElementById('payment-method').value;
       const orderType = getSelectedOrderType();
@@ -857,20 +1096,17 @@
             return;
           }
           const orderNumber = generateOrderNumber();
-          alert("Cash payment confirmed. Change: ₱" + (received - total).toFixed(2) + "\\nOrder Type: " + orderType + "\\nYour order number is: " + orderNumber);
+          alert("Cash payment confirmed. Change: ₱" + (received - total).toFixed(2) + 
+          "\nOrder Type: " + orderType + 
+          "\nYour order number is: " + orderNumber);
       } else if (method === 'gcash') {
           const orderNumber = generateOrderNumber();
-          alert("GCash payment recorded. Thank you!\\nOrder Type: " + orderType + "\\nYour order number is: " + orderNumber);
+          alert("GCash payment recorded. Thank you!\nOrder Type: " + orderType + "\nYour order number is: " + orderNumber);
       }
       closePaymentModal();
       clearOrders();
     }
-
-    function closePaymentModal() {
-      document.getElementById('payment-modal').style.display = 'none';
-    }
   </script>
 </body>
 </html>
-
 
