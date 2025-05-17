@@ -3,427 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BREWeb</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fffaf0;
-      color: #333;
-    }
-
-    body > div {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      height: 100%;
-      overflow: hidden;
-      font-size: 16px;
-    }
-
-    .items-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .item-box {
-      background: #ccc;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-      transition: background-color 0.2s ease;
-    }
-
-    .item-box:hover {
-      background: #bbb;
-    }
-
-    aside h2 {
-      text-align: center;
-    }
-
-    /*Styles for Navigation*/
-    button {
-      background-color: #FFD483; /* Light orange-yellow */
-      color: #000000;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #e6b74f;
-      color: #000000;
-    }
-
-    /* Profile Button - style for image button */
-    #profile-btn {
-      background-color: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-      text-decoration: none;
-    }
-    #profile-btn img {
-      display: block;
-      width: 28px;
-      height: 28px;
-    }
-    #profile-btn:hover img {
-      filter: brightness(0.8);
-    }
-
-    /* Drawer Styles */
-    /* Adjust drawer to the left side */
-    #profile-drawer {
-      display: block; /* Keep block for layout */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 250px;
-      height: 100%;
-      background-color: #FFD483;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.5);
-      z-index: 1000;
-      padding: 20px;
-      transition: transform 0.5s ease, opacity 0.3s ease;
-      transform: translateX(-100%);
-      opacity: 0;
-      pointer-events: none; /* Prevent interactions when hidden */
-    }
-
-    #profile-drawer.open {
-      transform: translateX(0);
-      opacity: 1;
-      pointer-events: auto; /* Enable interactions when visible */
-    }
-
-    #drawer-close-btn {
-      background: transparent;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
-
-    /* Drawer Login and Logout replaced login button with styled anchor */
-    #drawer-login-btn, #drawer-logout-btn {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      background-color: #D0AC77;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-      text-align: center;
-      font-weight: bold;
-      font-size: 16px;
-      text-decoration: none;
-    }
-
-    #drawer-login-btn:hover, #drawer-logout-btn:hover {
-      background-color: #B38E53;
-      color: white;
-    }
-
-    /* Style for Payment Modal/Method */
-    .order-controls button {
-      background-color: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-
-
-    section {
-      flex: 1;
-      padding: 20px;
-      border-left: 1px solid #ccc;
-      background-color: #f9f9f9;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100vh;
-      max-height: 100vh;
-      box-sizing: border-box;
-    }
-
-    #order-list {
-      max-height: 60vh;
-      overflow-y: auto;
-      margin-bottom: 20px;
-    }
-
-    .order-controls {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: auto;
-    }
-    .order-controls button {
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      width: 48%;
-    }
-
-    /* Clear All Button */
-    .order-controls button:nth-child(1) {
-      background-color: #FFD483;
-      color: black;
-    }
-
-    .order-controls button:nth-child(1):hover {
-      background-color: #FFD483;
-      color: black;
-    }
-
-    /* Checkout Button */
-    .order-controls button:nth-child(2) {
-      background-color: #D0AC77;
-      color: black;
-      font-weight: bold;
-    }
-
-    .order-controls button:nth-child(2):hover {
-      background-color: #D0AC77;
-      color: black;
-    }
-
-    .order-entry {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid #999;
-      padding: 10px;
-      margin-bottom: 8px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      font-size: 15px;
-      user-select: none;
-    }
-
-    .order-name {
-      flex: 1;
-      padding-right: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 0 10px;
-    }
-
-    .quantity-controls button {
-      background-color: #D0AC77;
-      border: none;
-      border-radius: 4px;
-      padding: 3px 9px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      color: black;
-      line-height: 1;
-      user-select: none;
-      transition: background-color 0.2s ease;
-    }
-
-    .quantity-controls button:hover {
-      background-color: #B38E53;
-      color: white;
-    }
-
-    .item-price {
-      min-width: 70px;
-      text-align: right;
-      font-weight: 600;
-    }
-
-    .remove-btn {
-      background: transparent;
-      border: none;
-      color: #dc3545;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 0 6px;
-      user-select: none;
-      transition: color 0.2s ease;
-    }
-    .remove-btn:hover {
-      color: #a71d2a;
-    }
-
-    #payment-modal {
-      display:none;
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background:#000000aa;
-      z-index:2000;
-      justify-content:center;
-      align-items:center;
-      padding: 15px;
-      box-sizing: border-box;
-    }
-    #payment-modal > div {
-      background:#fff;
-      padding:30px;
-      border-radius:10px;
-      max-width: 400px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    #payment-modal h3 {
-      margin-top:0;
-      margin-bottom: 15px;
-    }
-    #payment-modal select,
-    #payment-modal input[type="number"] {
-      width: 100%;
-      padding: 8px 10px;
-      font-size: 16px;
-      margin: 10px 0 15px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    #payment-modal p {
-      margin: 5px 0;
-    }
-    #payment-modal button {
-      margin-left: 10px;
-      border-radius: 5px;
-      padding: 8px 15px;
-      font-weight: bold;
-    }
-
-    #order-type-section {
-      margin: 15px 0 18px 0;
-    }
-    #order-type-section label {
-      margin-right: 20px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-    }
-    #order-type-section input[type="radio"] {
-      margin-right: 6px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 600px) {
-      main {
-        flex-direction: column;
-        height: auto;
-      }
-      section {
-        max-height: none;
-        border-left: none;
-        padding: 10px;
-        height: auto;
-      }
-      .items-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-top: 12px;
-      }
-      header nav {
-        gap: 15px;
-      }
-      button {
-        padding: 8px 12px;
-        font-size: 14px;
-      }
-      .order-controls button {
-        padding: 10px;
-        font-size: 14px;
-      }
-      #profile-btn img {
-        width: 24px;
-        height: 24px;
-      }
-      #logo-img {
-        max-height: 40px;
-        width: auto;
-      }
-      #profile-drawer {
-        width: 100%;
-      }
-    }
-
-    #logo-img {
-      max-height: 50px;
-      width: auto;
-      object-fit: contain;
-    }
-  </style>
+  <title>Customer</title>
+  <!-- Link to external CSS file -->
+  <link rel="stylesheet" href="Customer.css" />
 </head>
 <body>
   <div>
-    <header style="display: flex; padding: 10px 0; background: #D0AC77; text-align: center;">
-
-      <div style="flex: 1; display: flex; align-items: center; justify-content: flex-start; padding-left: 20px;">
+    <!-- Header bar with three sections: profile button, navigation, logo -->
+    <header id="page-header">
+      <!-- Left section: Profile drawer toggle button -->
+      <div class="header-left">
         <button id="profile-btn" onclick="handleProfileClick()" aria-label="Profile">
           <img src="profile-icon.png" alt="Profile Icon" />
         </button>
       </div>
 
-      <div style="display: flex; justify-content: center; margin-top: 5px; flex: 2;">
-          <nav style="display: flex; gap: 70px;">
+      <!-- Center section: Navigation buttons for coffee categories -->
+      <div class="header-center">
+        <nav>
           <button id="btn-a">Hot Coffee</button>
           <button id="btn-b">Iced Coffee</button>
           <button id="btn-c">Non Coffee</button>
           <button id="btn-d">Pastries</button>
-          </nav>
+        </nav>
       </div>
 
-      <div style="flex: 1; display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
+      <!-- Right section: Company logo -->
+      <div class="header-right">
         <img id="logo-img" src="logo.png" alt="BREWeb Logo" />
       </div>
-
     </header>
 
+    <!-- Profile drawer panel (hidden by default, slides in) -->
     <div id="profile-drawer">
       <button id="drawer-close-btn" onclick="closeDrawer()">✖</button>
       <h3>"For Staff/Admin Only"</h3>
       <a id="drawer-login-btn" href="login.php">Log In/Sign up</a>
     </div>
 
-    <main style="display: flex; height: 100%;">
-      <section style="flex: 2; padding: 20px;">
+    <main>
+      <!-- Left section: items grid for coffee and pastries -->
+      <section id="items-section">
         <div id="items-a" class="items-grid">
             <div class="item-box" data-name="Cafe Americano" data-price="120">
                 <div><strong>Cafe Americano</strong></div>
@@ -451,7 +71,7 @@
             </div>
         </div>
         
-        <div id="items-b" class="items-grid" style="display: none;">
+        <div id="items-b" class="items-grid hidden">
             <div class="item-box" data-name="Coffee Jelly" data-price="130">
                 <div><strong>Coffee Jelly</strong></div>
                 <div>₱130.00</div>
@@ -474,7 +94,7 @@
             </div>
         </div>
         
-        <div id="items-c" class="items-grid" style="display: none;">
+        <div id="items-c" class="items-grid hidden">
             <div class="item-box" data-name="Red Velvet Latte" data-price="155">
                 <div><strong>Red Velvet Latte</strong></div>
                 <div>₱155.00</div>
@@ -493,7 +113,7 @@
             </div>
         </div>
         
-        <div id="items-d" class="items-grid" style="display: none;">
+        <div id="items-d" class="items-grid hidden">
             <div class="item-box" data-name="Pumpkin Spice Latte" data-price="170">
                 <div><strong>Pumpkin Spice Latte</strong></div>
                 <div>₱170.00</div>
@@ -508,14 +128,16 @@
             </div>
         </div>
       </section>
-      <section style="flex: 1; padding: 20px; border-left: 1px solid #ccc; background-color: #f9f9f9; display: flex; flex-direction: column; space-between; height: 90vh;">
+
+      <!-- Right section: Orders list and checkout controls -->
+      <section id="order-section" style="height: 90vh;">
         <div>
-          <h3 style="background-color: #FFD483; padding: 20px; border-radius: 5px;">Orders</h3>
+          <h3 class="orders-header">Orders</h3>
           <div id="order-list"></div>
         </div>
 
-        <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid #000000;">
-          <div style="text-align: right; font-weight: bold; margin-bottom: 10px;">
+        <div class="order-summary">
+          <div class="order-total-label">
             Total: ₱<span id="order-total">0.00</span>
           </div>
           <div class="order-controls">
@@ -525,9 +147,10 @@
         </div>
       </section>
 
-      <div id="payment-modal">
+      <!-- Payment modal popup for order payment -->
+      <div id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title">
         <div>
-          <h3>Select Payment Method</h3>
+          <h3 id="payment-modal-title">Select Payment Method</h3>
 
           <div id="order-type-section" role="radiogroup" aria-label="Select Order Type">
             <label>
@@ -540,7 +163,7 @@
             </label>
           </div>
           
-          <select id="payment-method">
+          <select id="payment-method" aria-label="Payment Method">
             <option value="cash">Cash</option>
             <option value="gcash">GCash</option>
           </select>
@@ -548,16 +171,16 @@
           <div id="cash-section">
             <p>Total Due: ₱<span id="payment-total">0.00</span></p>
             <label>Received Cash:
-                <input type="number" id="cash-input" min="0" step="0.01"/>
+                <input type="number" id="cash-input" min="0" step="0.01" aria-label="Received cash amount"/>
             </label>
             <p>Change: ₱<span id="change-amount">0.00</span></p>
           </div>
 
-          <div id="gcash-section" style="display:none;">
+          <div id="gcash-section" class="hidden">
             <p>Please confirm payment via GCash on your mobile device.</p>
           </div>
 
-          <div style="margin-top:20px; text-align:right;">
+          <div class="payment-buttons">
             <button onclick="closePaymentModal()">Cancel</button>
             <button onclick="confirmPayment()">Confirm</button>
           </div>
@@ -568,7 +191,7 @@
   </div>
 
   <script>
-    // Profile button click handler toggles drawer
+    // Profile button click handler toggles drawer visibility
     function handleProfileClick() {
       const drawer = document.getElementById('profile-drawer');
       if (drawer.classList.contains('open')) {
@@ -582,6 +205,7 @@
       document.getElementById('profile-drawer').classList.remove('open');
     }
 
+    // Mapping navigation buttons to items grid sections
     const sections = {
       'btn-a': 'items-a',
       'btn-b': 'items-b',
@@ -592,9 +216,9 @@
     Object.keys(sections).forEach(btnId => {
       document.getElementById(btnId).addEventListener('click', () => {
         Object.values(sections).forEach(id => {
-          document.getElementById(id).style.display = 'none';
+          document.getElementById(id).classList.add('hidden');
         });
-        document.getElementById(sections[btnId]).style.display = 'grid';
+        document.getElementById(sections[btnId]).classList.remove('hidden');
       });
     });
 
@@ -602,11 +226,13 @@
     const orders = {};
     let orderNumberCount = 0;
 
+    // Generate unique order number with padding
     function generateOrderNumber() {
       orderNumberCount++;
-      return 'ORD' + String(orderNumberCount).padStart(4, '0');
+      return 'CS' + String(orderNumberCount).padStart(4, '0');
     }
 
+    // Add click event listeners to item boxes to add to orders
     document.querySelectorAll(".item-box").forEach(box => {
       box.addEventListener("click", () => {
         const name = box.getAttribute("data-name");
@@ -629,6 +255,7 @@
       });
     });
 
+    // Add new order entry to order list UI
     function addNewOrderItem(name) {
       const orderList = document.getElementById("order-list");
       const orderItem = document.createElement("div");
@@ -694,6 +321,7 @@
       orders[name].orderItem = orderItem;
     }
 
+    // Update quantity and price display for order item
     function updateOrderItem(name) {
       const item = orders[name];
       const orderItem = item.orderItem;
@@ -703,10 +331,12 @@
       itemPrice.textContent = `₱${item.totalPrice.toFixed(2)}`;
     }
 
+    // Update total price display
     function updateTotal() {
       document.getElementById("order-total").textContent = total.toFixed(2);
     }
 
+    // Clear all orders and reset UI and data
     function clearOrders() {
       const orderList = document.getElementById("order-list");
       orderList.innerHTML = "";
@@ -717,6 +347,7 @@
       updateTotal();
     }
 
+    // Show payment modal for checkout
     function checkout() {
       if (total <= 0) {
         alert("No orders to checkout.");
@@ -732,18 +363,21 @@
 
     document.getElementById('payment-method').addEventListener('change', updatePaymentMethodView);
 
+    // Toggle cash or gcash payment section visibility
     function updatePaymentMethodView() {
       const method = document.getElementById('payment-method').value;
       document.getElementById('cash-section').style.display = method === 'cash' ? 'block' : 'none';
       document.getElementById('gcash-section').style.display = method === 'gcash' ? 'block' : 'none';
     }
 
+    // Update change amount when user inputs received cash
     document.getElementById('cash-input').addEventListener('input', () => {
       const received = parseFloat(document.getElementById('cash-input').value);
       const change = received - total;
       document.getElementById('change-amount').textContent = change >= 0 ? change.toFixed(2) : "0.00";
     });
 
+    // Get selected order type from radio buttons
     function getSelectedOrderType() {
       const radios = document.getElementsByName('order-type');
       for (const radio of radios) {
@@ -752,9 +386,21 @@
       return "Dine In";
     }
 
+    // Confirm payment, validate input and save transaction
     function confirmPayment() {
       const method = document.getElementById('payment-method').value;
       const orderType = getSelectedOrderType();
+
+      // Prepare items array for transaction
+      const itemsArray = Object.keys(orders).map(name => {
+        return {
+          name: name,
+          price: orders[name].price,
+          quantity: orders[name].quantity,
+          totalPrice: orders[name].totalPrice
+        };
+      });
+
       if (method === 'cash') {
           const received = parseFloat(document.getElementById('cash-input').value);
           if (isNaN(received) || received < total) {
@@ -763,14 +409,63 @@
           }
           const orderNumber = generateOrderNumber();
           alert("Cash payment confirmed. Change: ₱" + (received - total).toFixed(2) + "\nOrder Type: " + orderType + "\nYour order number is: " + orderNumber);
+          
+          // Save transaction to localStorage
+          saveTransaction(orderNumber, total, itemsArray, orderType, method);
+
       } else if (method === 'gcash') {
           const orderNumber = generateOrderNumber();
           alert("GCash payment recorded. Thank you!\nOrder Type: " + orderType + "\nYour order number is: " + orderNumber);
+          
+          // Save transaction to localStorage
+          saveTransaction(orderNumber, total, itemsArray, orderType, method);
       }
       closePaymentModal();
       clearOrders();
     }
 
+    // Save transaction details into localStorage
+    function saveTransaction(orderNumber, totalPrice, items, orderType, paymentMethod) {
+      const TRANSACTION_STORAGE_KEY = 'savedTransactions';
+      let savedTransactions = [];
+      try {
+        const existing = localStorage.getItem(TRANSACTION_STORAGE_KEY);
+        if (existing) {
+          const parsed = JSON.parse(existing);
+          if (Array.isArray(parsed)) {
+            savedTransactions = parsed;
+          }
+        }
+      } catch(e) {
+        console.error('Error reading saved transactions', e);
+      }
+
+      // Create simplified items array for transaction - each item should have name and price for customer transaction page
+      // Quantity can be included if needed by that page
+      const simplifiedItems = items.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity
+      }));
+
+      const newTransaction = {
+        orderNumber: orderNumber,
+        totalPrice: totalPrice,
+        items: simplifiedItems,
+        orderType: orderType,
+        paymentMethod: paymentMethod
+      };
+
+      savedTransactions.push(newTransaction);
+
+      try {
+        localStorage.setItem(TRANSACTION_STORAGE_KEY, JSON.stringify(savedTransactions));
+      } catch(e) {
+        console.error('Error saving transaction', e);
+      }
+    }
+
+    // Close/hide the payment modal popup
     function closePaymentModal() {
       document.getElementById('payment-modal').style.display = 'none';
     }

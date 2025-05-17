@@ -3,543 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BREWeb with Manage Items Button in Header</title>
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #fffaf0;
-      color: #333;
-    }
-
-    body > div {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      height: 100%;
-      overflow: hidden;
-      font-size: 16px;
-    }
-
-    .items-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .item-box {
-      background: #ccc;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-      transition: background-color 0.2s ease;
-      min-height: 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .item-box:hover {
-      background: #bbb;
-    }
-
-    /* Styles for Navigation Buttons (including Manage Items) */
-    header nav {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    }
-
-    header nav button {
-      background-color: #FFD483; /* Light orange-yellow */
-      color: #000000;
-      font-weight: bold;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      font-size: 16px;
-      white-space: nowrap;
-    }
-
-    header nav button:hover {
-      background-color: #e6b74f;
-      color: #000000;
-    }
-
-    /* Distinct style for Manage Items button in header */
-    .manage-items-btn-header {
-      background-color:rgb(4, 179, 4);
-      color: black;
-      font-weight: bold;
-      border-radius: 8px;
-      padding: 10px 22px;
-      font-size: 16px;
-      box-shadow: 0 2px 6px rgba(179, 119, 0, 0.7);
-      transition: background-color 0.3s ease;
-      white-space: nowrap;
-    }
-    .manage-items-btn-header:hover {
-      background-color:rgb(5, 149, 5);
-      color: black;
-    }
-
-    /* Order Section Styles */
-    section {
-      flex: 1;
-      padding: 20px;
-      border-left: 1px solid #ccc;
-      background-color: #f9f9f9;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 100vh;
-      max-height: 100vh;
-      box-sizing: border-box;
-    }
-
-    #order-list {
-      max-height: 60vh;
-      overflow-y: auto;
-      margin-bottom: 20px;
-    }
-
-    .order-controls {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: auto;
-    }
-    
-    .order-controls button {
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      width: 48%;
-    }
-    .order-controls button:nth-child(1) {
-      background-color: #FFD483;
-      color: black;
-    }
-    .order-controls button:nth-child(1):hover {
-      background-color: #FFD483;
-      color: black;
-    }
-    .order-controls button:nth-child(2) {
-      background-color: #D0AC77;
-      color: black;
-      font-weight: bold;
-    }
-    .order-controls button:nth-child(2):hover {
-      background-color: #D0AC77;
-      color: black;
-    }
-
-    .order-entry {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border: 1px solid #999;
-      padding: 10px;
-      margin-bottom: 8px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      font-size: 15px;
-      user-select: none;
-    }
-
-    .order-name {
-      flex: 1;
-      padding-right: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .quantity-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin: 0 10px;
-    }
-
-    .quantity-controls button {
-      background-color: #D0AC77;
-      border: none;
-      border-radius: 4px;
-      padding: 3px 9px;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      color: black;
-      line-height: 1;
-      user-select: none;
-      transition: background-color 0.2s ease;
-    }
-
-    .quantity-controls button:hover {
-      background-color: #B38E53;
-      color: white;
-    }
-
-    .item-price {
-      min-width: 70px;
-      text-align: right;
-      font-weight: 600;
-    }
-
-    .remove-btn {
-      background: transparent;
-      border: none;
-      color: #dc3545;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 0 6px;
-      user-select: none;
-      transition: color 0.2s ease;
-    }
-    .remove-btn:hover {
-      color: #a71d2a;
-    }
-
-    /* Payment Modal */
-    #payment-modal {
-      display:none;
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background:#000000aa;
-      z-index:2000;
-      justify-content:center;
-      align-items:center;
-      padding: 15px;
-      box-sizing: border-box;
-    }
-    #payment-modal > div {
-      background:#fff;
-      padding:30px;
-      border-radius:10px;
-      max-width: 400px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    #payment-modal h3 {
-      margin-top:0;
-      margin-bottom: 15px;
-    }
-    #payment-modal select, #payment-modal input[type="number"] {
-      width: 100%;
-      padding: 8px 10px;
-      font-size: 16px;
-      margin: 10px 0 15px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    #payment-modal p {
-      margin: 5px 0;
-    }
-    #payment-modal button {
-      margin-left: 10px;
-      border-radius: 5px;
-      padding: 8px 15px;
-      font-weight: bold;
-    }
-
-    /* Dine In / Take Out Section */
-    #order-type-section {
-      margin: 15px 0 18px 0;
-    }
-    #order-type-section label {
-      margin-right: 20px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-    }
-    #order-type-section input[type="radio"] {
-      margin-right: 6px;
-      cursor: pointer;
-    }
-    
-    /* Responsive tweaks for small/mobile screens */
-    @media (max-width: 600px) {
-      main {
-        flex-direction: column;
-        height: auto;
-      }
-      section {
-        max-height: none;
-        border-left: none;
-        padding: 10px;
-        height: auto;
-      }
-      .items-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-top: 12px;
-      }
-      header nav {
-        gap: 12px;
-      }
-      header nav button {
-        padding: 8px 14px;
-        font-size: 14px;
-      }
-      .order-controls button {
-        padding: 10px;
-        font-size: 14px;
-      }
-      /* Resize logo image for mobile */
-      #logo-img {
-        max-height: 40px;
-        width: auto;
-      }
-    }
-
-    /* Logo Image Style */
-    #logo-img {
-      max-height: 50px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    /* Simplified Side Drawer Styles */
-    #side-drawer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 280px;
-      height: 100vh;
-      background-color: #FFD483;
-      box-shadow: 2px 0 6px rgba(0,0,0,0.3);
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 1500;
-      padding: 20px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-    #side-drawer.open {
-      transform: translateX(0);
-    }
-    #side-drawer nav.main-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      font-weight: 600;
-      flex-grow: 1;
-      overflow-y: auto;
-    }
-    #side-drawer nav.main-nav a {
-      color: #333;
-      text-decoration: none;
-      padding: 8px 10px;
-      border-radius: 6px;
-      user-select: none;
-      transition: background-color 0.2s ease;
-      cursor: pointer;
-      background: none;
-      border: none;
-      text-align: left;
-    }
-    #side-drawer nav.main-nav a:hover {
-      background-color: #e6b74f;
-      color: black;
-    }
-    #side-drawer nav.bottom-nav {
-      font-weight: 600;
-      margin-top: auto;
-      border-top: 1px solid #b37700;
-      padding-top: 12px;
-    }
-    #side-drawer nav.bottom-nav a {
-      color: #b30000;
-      text-decoration: none;
-      padding: 8px 10px;
-      border-radius: 6px;
-      user-select: none;
-      transition: background-color 0.2s ease, color 0.2s ease;
-      cursor: pointer;
-      background: none;
-      border: none;
-      text-align: left;
-      font-weight: 700;
-    }
-    #side-drawer nav.bottom-nav a:hover {
-      background-color: #cc0000;
-      color: white;
-    }
-    #close-drawer {
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      margin-bottom: 15px;
-      color: #333;
-      user-select: none;
-      font-weight: bold;
-    }
-    #close-drawer:hover {
-      color: #b37700;
-    }
-    /* Backdrop overlay */
-    #drawer-backdrop {
-      display: none;
-      position: fixed;
-      top:0; left:0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.3);
-      z-index: 1400;
-    }
-    #drawer-backdrop.visible {
-      display: block;
-    }
-    /* Hamburger icon */
-    header .hamburger {
-      font-size: 38px;
-      cursor: pointer;
-      user-select: none;
-      line-height: 1;
-    }
-    header .hamburger.open {
-      color: #b37700;
-    }
-
-    /* Manage Items Modal */
-    #manage-items-modal {
-      display:none;
-      position: fixed;
-      z-index: 3000;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    #manage-items-modal > div {
-      background: #fff;
-      border-radius: 10px;
-      max-width: 600px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-    }
-    #manage-items-modal h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #b37700;
-    }
-
-    #manage-items-list {
-      flex-grow: 1;
-      margin-bottom: 20px;
-      overflow-y: auto;
-    }
-    .manage-item-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .manage-item-row input[type="text"],
-    .manage-item-row input[type="number"],
-    .manage-item-row select {
-      padding: 6px 10px;
-      font-size: 14px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      flex-grow: 1;
-      box-sizing: border-box;
-    }
-    .manage-item-row input[type="number"] {
-      max-width: 100px;
-    }
-    .manage-item-row select {
-      max-width: 140px;
-    }
-    .manage-item-row button.delete-item-btn {
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 10px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background-color 0.2s ease;
-    }
-    .manage-item-row button.delete-item-btn:hover {
-      background-color: #a71d2a;
-    }
-    #add-item-btn {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 16px;
-      font-size: 16px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: bold;
-      margin-bottom: 20px;
-      transition: background-color 0.3s ease;
-    }
-    #add-item-btn:hover {
-      background-color: #1e7e34;
-    }
-
-    /* Manage modal buttons */
-    .manage-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 15px;
-    }
-    .manage-actions button {
-      background-color: #D0AC77;
-      color: black;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .manage-actions button:hover {
-      background-color: #b37a2f;
-    }
-    .manage-actions button.cancel-btn {
-      background-color: #dc3545;
-      color: white;
-    }
-    .manage-actions button.cancel-btn:hover {
-      background-color: #a71d2a;
-    }
-  </style>
+  <title>Admin</title>
+  <link rel="stylesheet" href="Admin.css" />
 </head>
 <body>
   <!-- Container -->
@@ -569,13 +34,12 @@
 
     <!-- Side Drawer -->
     <div id="side-drawer" aria-hidden="true">
-      <button id="close-drawer" aria-label="Close menu">✖ Options</button>
+      <button id="close-drawer" aria-label="Close menu">✖ Close</button>
 
       <!-- Drawer Content -->
       <nav class="main-nav">
           <a href="#">Sales Report</a>
-          <a href="transaction-page.php">Transaction</a>
-          <a href="cash-drawer.php">Cash Drawer</a>
+          <a href="admin-transaction.php">Transaction</a>
       </nav>
 
       <nav class="bottom-nav" aria-label="User Identity">
@@ -698,6 +162,9 @@
     let total = 0;
     let orderNumberCount = 0;
 
+    // Transaction storage key
+    const TRANSACTION_STORAGE_KEY = 'savedTransactions';
+
     window.onload = () => {
       loadItems();
       setupCategoryButtons();
@@ -709,6 +176,7 @@
     };
 
     function loadItems() {
+      // Load menu items from localStorage or use default items
       const stored = localStorage.getItem('menuItems');
       if (stored) {
         try {
@@ -722,9 +190,11 @@
       }
     }
     function saveItems() {
+      // Save current menu items to localStorage
       localStorage.setItem('menuItems', JSON.stringify(items));
     }
     function setupCategoryButtons() {
+      // Attach event listeners to category buttons to switch displayed items
       Object.keys(categories).forEach(btnId => {
         document.getElementById(btnId).addEventListener('click', () => {
           currentCategory = categories[btnId];
@@ -738,6 +208,7 @@
       });
     }
     function renderItemsGrid() {
+      // Render menu items based on selected category
       const container = document.getElementById('items-grid');
       container.innerHTML = '';
       const filteredItems = items.filter(i => i.category === currentCategory);
@@ -768,6 +239,7 @@
       });
     }
     function addItemToOrder(id) {
+      // Add item to the orders, update quantities and prices accordingly
       const item = items.find(i => i.id === id);
       if (!item) return;
       if (orders[id]) {
@@ -786,6 +258,7 @@
       updateTotal();
     }
     function addNewOrderItem(id) {
+      // Add new order entry in the order list UI
       const orderList = document.getElementById("order-list");
       const item = orders[id];
 
@@ -862,6 +335,7 @@
       orders[id].orderItem = orderItem;
     }
     function updateOrderItem(id) {
+      // Update the UI quantity and price for an order item
       const item = orders[id];
       if(!item || !item.orderItem) return;
       const orderItem = item.orderItem;
@@ -871,9 +345,11 @@
       itemPrice.textContent = `₱${item.totalPrice.toFixed(2)}`;
     }
     function updateTotal() {
+      // Update total amount display
       document.getElementById("order-total").textContent = total.toFixed(2);
     }
     function clearOrders() {
+      // Clear all orders and reset UI and total
       const orderList = document.getElementById("order-list");
       orderList.innerHTML = "";
       total = 0;
@@ -883,6 +359,7 @@
       updateTotal();
     }
     function setupSideDrawer() {
+      // Set up hamburger menu toggle and side drawer behavior
       const hamburger = document.querySelector('.hamburger');
       const sideDrawer = document.getElementById('side-drawer');
       const backdrop = document.getElementById('drawer-backdrop');
@@ -916,6 +393,7 @@
       });
     }
     function setupManageItems() {
+      // Setup Manage Items modal with add, delete, save, cancel functionality
       const modal = document.getElementById('manage-items-modal');
       const addBtn = document.getElementById('add-item-btn');
       const listContainer = document.getElementById('manage-items-list');
@@ -966,6 +444,7 @@
       });
     }
     function renderManageItemsList() {
+      // Render the list of items in Manage Items modal
       const container = document.getElementById('manage-items-list');
       container.innerHTML = '';
       items.forEach(item => {
@@ -973,6 +452,7 @@
       });
     }
     function addManageItemRow(item, isNew) {
+      // Create and append a row for an individual manage item entry
       const container = document.getElementById('manage-items-list');
       const row = document.createElement('div');
       row.className = 'manage-item-row';
@@ -1033,9 +513,11 @@
       }
     }
     function generateId() {
+      // Generate a unique id string
       return 'id-' + Math.random().toString(36).substr(2, 9);
     }
     function setupPaymentModal() {
+      // Setup payment modal UI interactions and inputs
       const paymentModal = document.getElementById('payment-modal');
       const paymentMethodSelect = document.getElementById('payment-method');
       const cashSection = document.getElementById('cash-section');
@@ -1060,6 +542,7 @@
       });
     }
     function checkout() {
+      // Open the payment modal if there are items in the order
       if (total <= 0) {
         alert("No orders to checkout.");
         return;
@@ -1073,9 +556,11 @@
       document.getElementById('gcash-section').style.display = 'none';
     }
     function closePaymentModal() {
+      // Close the payment modal
       document.getElementById('payment-modal').style.display = 'none';
     }
     function getSelectedOrderType() {
+      // Get order type from radio buttons
       const radios = document.getElementsByName('order-type');
       for (const radio of radios) {
         if (radio.checked) return radio.value;
@@ -1083,10 +568,12 @@
       return "Dine In";
     }
     function generateOrderNumber() {
+      // Generate unique order number
       orderNumberCount++;
       return 'ORD' + String(orderNumberCount).padStart(4, '0');
     }
     function confirmPayment() {
+      // Confirm payment, validate cash if selected, and save transaction
       const method = document.getElementById('payment-method').value;
       const orderType = getSelectedOrderType();
       if (method === 'cash') {
@@ -1095,13 +582,53 @@
             alert("Insufficient cash.");
             return;
           }
-          const orderNumber = generateOrderNumber();
-          alert("Cash payment confirmed. Change: ₱" + (received - total).toFixed(2) + 
-          "\nOrder Type: " + orderType + 
-          "\nYour order number is: " + orderNumber);
+          saveTransactionAndConfirm(received, method, orderType);
       } else if (method === 'gcash') {
-          const orderNumber = generateOrderNumber();
-          alert("GCash payment recorded. Thank you!\nOrder Type: " + orderType + "\nYour order number is: " + orderNumber);
+          saveTransactionAndConfirm(null, method, orderType);
+      }
+    }
+
+    function saveTransactionAndConfirm(receivedCash, paymentMethod, orderType) {
+      // Save the transaction data to localStorage and notify user
+      const orderItems = [];
+      for(const id in orders) {
+        const ord = orders[id];
+        const menuItem = items.find(i => i.id === id);
+        if(menuItem) {
+          for(let i=0; i<ord.quantity; i++) {
+            orderItems.push({ name: menuItem.name, price: menuItem.price });
+          }
+        }
+      }
+      const now = new Date();
+      const dateISO = now.toISOString().slice(0,10);
+      const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+
+      const transaction = {
+        date: dateISO,
+        time: timeString,
+        totalPrice: total,
+        items: orderItems,
+        paymentMethod: paymentMethod,
+        orderType: orderType,
+        orderNumber: generateOrderNumber()
+      };
+
+      let savedTransactions = [];
+      try {
+        savedTransactions = JSON.parse(localStorage.getItem(TRANSACTION_STORAGE_KEY)) || [];
+        if (!Array.isArray(savedTransactions)) savedTransactions = [];
+      } catch(e) {
+        savedTransactions = [];
+      }
+
+      savedTransactions.unshift(transaction); // newest first
+      localStorage.setItem(TRANSACTION_STORAGE_KEY, JSON.stringify(savedTransactions));
+
+      if(paymentMethod === 'cash') {
+        alert(`Cash payment confirmed. Change: ₱${(receivedCash - total).toFixed(2)}\nOrder Type: ${orderType}\nYour order number is: ${transaction.orderNumber}`);
+      } else {
+        alert(`GCash payment recorded. Thank you!\nOrder Type: ${orderType}\nYour order number is: ${transaction.orderNumber}`);
       }
       closePaymentModal();
       clearOrders();
