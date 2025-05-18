@@ -38,8 +38,9 @@
 
       <!-- Drawer Content -->
       <nav class="main-nav">
-          <a href="#">Sales Report</a>
+          <a href="profile.php">Profile</a>
           <a href="admin-transaction.php">Transaction</a>
+          <a href="sales-report.php">Sales Report</a>
       </nav>
 
       <nav class="bottom-nav" aria-label="User Identity">
@@ -78,8 +79,8 @@
       </section>
 
       <!-- Payment Modal -->
-      <div id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title" tabindex="-1">
-        <div>
+      <div id="payment-modal" role="dialog" aria-modal="true" aria-labelledby="payment-modal-title" tabindex="-1" style="display:none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.4); align-items: center; justify-content: center;">
+        <div style="background: white; padding: 20px; border-radius: 5px; max-width: 400px; width: 90%;">
           <h3 id="payment-modal-title">Select Payment Method</h3>
           <div id="order-type-section" role="radiogroup" aria-label="Select Order Type">
             <label>
@@ -113,13 +114,13 @@
       </div>
 
       <!-- Manage Items Modal -->
-      <div id="manage-items-modal" role="dialog" aria-modal="true" aria-labelledby="manage-items-title" tabindex="-1">
-        <div>
+      <div id="manage-items-modal" role="dialog" aria-modal="true" aria-labelledby="manage-items-title" tabindex="-1" style="display:none; position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.4); align-items: center; justify-content: center;">
+        <div style="background: white; padding: 20px; border-radius: 5px; max-width: 600px; width: 90%;">
           <h2 id="manage-items-title">Manage Menu Items</h2>
           <button id="add-item-btn" aria-label="Add new menu item">+ Add New Item</button>
-          <div id="manage-items-list" role="list" aria-live="polite" aria-label="Menu items management list">
+          <div id="manage-items-list" role="list" aria-live="polite" aria-label="Menu items management list" style="max-height: 300px; overflow-y: auto; margin-top: 10px;">
           </div>
-          <div class="manage-actions">
+          <div class="manage-actions" style="margin-top: 15px; text-align: right;">
             <button id="save-items-btn">Save Changes</button>
             <button id="cancel-items-btn" class="cancel-btn">Cancel</button>
           </div>
@@ -609,7 +610,7 @@
         time: timeString,
         totalPrice: total,
         items: orderItems,
-        paymentMethod: paymentMethod,
+        paymentType: paymentMethod, // fixed property name
         orderType: orderType,
         orderNumber: generateOrderNumber()
       };
@@ -633,7 +634,7 @@
       closePaymentModal();
       clearOrders();
     }
+
   </script>
 </body>
 </html>
-

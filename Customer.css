@@ -301,6 +301,19 @@ section {
   box-sizing: border-box;
 }
 
+/* Ensure the order section specifically keeps its original size */
+#order-section {
+  flex: 1;
+  height: 90vh;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
 /* Order list container with vertical scroll */
 #order-list {
   max-height: 60vh;

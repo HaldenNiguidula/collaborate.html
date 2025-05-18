@@ -292,6 +292,14 @@ body {
   letter-spacing: 1.2px;
 }
 
+/* Additional inline style for payment type display */
+.payment-type {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 0.4em;
+  font-weight: 500;
+}
+
 /* Section showing total price and item count */
 .total-info {
   display: flex;
@@ -484,5 +492,12 @@ body {
   }
   .title {
     margin-left: 0;
+  }
+  /* Additional inline style for payment type display */
+  .payment-type {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 0.4em;
+    font-weight: 500;
   }
 }

@@ -1,0 +1,83 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    }
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFD37F;
+    padding: 15px 35px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.logo {
+    font-family: 'Georgia', serif;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.title {
+  text-align: center;
+  font-size: 36px;
+  margin: 20px 0 10px;
+  font-family: 'Joan', serif;
+}
+
+.top-boxes, .bottom-boxes {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+
+.box {
+  background-color: #cfa56f;
+  width: 22%;
+  min-width: 180px;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.top-boxes .box {
+  font-family: 'Inter', sans-serif;
+}
+
+.box h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.box p {
+  font-size: 32px;
+  font-weight: 400;
+  font-family: inherit;
+}
+
+.bottom-boxes .box {
+  min-height: 350px;
+  font-family: 'Joan', serif;
+}
+
+.bottom-boxes .box h2 {
+  font-size: 18px;
+}

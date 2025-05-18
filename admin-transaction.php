@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Transactions</title>
-<!-- Link to external CSS file for styling -->
-<link rel="stylesheet" href="admin-transaction.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transactions</title>
+  <!-- Link to external CSS file for styling -->
+  <link rel="stylesheet" href="admin-transaction.css" />
 </head>
 <body>
   <!-- Top Navigation Bar containing menu button, title, search, and logo -->
@@ -51,8 +51,9 @@
       <!-- Main navigation links in the side drawer -->
       <nav class="main-nav">
           <a href="Admin.php">Home</a>
-          <a href="#">Sales Report</a>
+          <a href="profile.php">Profile</a>
           <a href="admin-transaction.php">Transaction</a>
+          <a href="sales-report.php">Sales Report</a>
       </nav>
 
       <!-- Bottom navigation for user identity actions -->
@@ -78,6 +79,9 @@
         <span class="left-label">Total</span>
         <span id="orderNumberLabel" style="font-weight:bold;"></span>
       </div>
+
+      <!-- Payment type display -->
+      <div class="payment-type" id="paymentTypeLabel" aria-live="polite" aria-atomic="true">Payment: -</div>
 
       <!-- Total price and item count summary -->
       <div class="total-info">
@@ -119,6 +123,7 @@
     const refundBtn = document.getElementById('refundBtn');
     const searchInput = document.getElementById('searchInput');
     const orderNumberLabel = document.getElementById('orderNumberLabel');
+    const paymentTypeLabel = document.getElementById('paymentTypeLabel');
 
     const menuIcon = document.querySelector('.menu-icon');
     const sideDrawer = document.getElementById('side-drawer');
@@ -149,8 +154,35 @@
       } catch(e) {
         console.error('Failed to load transactions from localStorage:', e);
       }
-      // No saved transactions found, initialize empty array
-      transactions = [];
+      // If no saved transactions, initialize with sample transactions including paymentType
+      transactions = [
+        {
+          orderNumber: "ORD1001",
+          totalPrice: 1500,
+          paymentType: "Cash",
+          items: [
+            { name: "Item A", price: 500 },
+            { name: "Item B", price: 1000 }
+          ]
+        },
+        {
+          orderNumber: "ORD1002",
+          totalPrice: 2000,
+          paymentType: "GCash",
+          items: [
+            { name: "Item C", price: 2000 }
+          ]
+        },
+        {
+          orderNumber: "ORD1003",
+          totalPrice: 750,
+          paymentType: "Cash",
+          items: [
+            { name: "Item D", price: 750 }
+          ]
+        }
+      ];
+      saveTransactions();
     }
 
     // Render transaction list filtering by search term (default empty)
@@ -158,11 +190,14 @@
       transactionListEl.innerHTML = '';
       const filterLower = filter.toLowerCase();
 
-      // Filter transactions by order number, total price, or item names matching search
+      // Filter transactions by order number, total price, item names, or paymentType matching search
       const filteredTxns = transactions.filter(tx => {
-        return (tx.orderNumber.toLowerCase().includes(filterLower)
+        return (
+          tx.orderNumber.toLowerCase().includes(filterLower)
           || tx.totalPrice.toString().includes(filterLower)
-          || (tx.items && tx.items.some(item => item.name.toLowerCase().includes(filterLower))));
+          || (tx.items && tx.items.some(item => item.name.toLowerCase().includes(filterLower)))
+          || (tx.paymentType && tx.paymentType.toLowerCase().includes(filterLower))
+        );
       });
 
       if(filteredTxns.length === 0) {
@@ -196,8 +231,16 @@
         const priceSpan = document.createElement('span');
         priceSpan.textContent = formatCurrency(tx.totalPrice);
 
+        // Show payment type next to price, styled smaller and italic
+        const paymentSpan = document.createElement('span');
+        paymentSpan.textContent = ` (${tx.paymentType || 'Unknown'})`;
+        paymentSpan.style.fontStyle = 'italic';
+        paymentSpan.style.color = '#666';
+        paymentSpan.style.marginLeft = '6px';
+
         entryDiv.appendChild(orderNumSpan);
         entryDiv.appendChild(priceSpan);
+        entryDiv.appendChild(paymentSpan);
 
         // Add click and keyboard (Enter/Space) handlers to select the transaction
         entryDiv.addEventListener('click', () => selectTransaction(originalIndex, entryDiv));
@@ -223,6 +266,7 @@
       subtotalRowEl.style.display = 'none';
       subtotalPriceEl.textContent = 'P0.00';
       orderNumberLabel.textContent = '';
+      paymentTypeLabel.textContent = 'Payment: -';
       reprintBtn.disabled = true;
       reprintBtn.setAttribute('aria-disabled', 'true');
       refundBtn.disabled = true;
@@ -258,6 +302,9 @@
 
       // Show order number label
       orderNumberLabel.textContent = activeTransaction.orderNumber || '';
+
+      // Show payment type or "Unknown" if missing
+      paymentTypeLabel.textContent = 'Payment: ' + (activeTransaction.paymentType || 'Unknown');
 
       // Clear and prepare the items box for item list and refund selection
       itemsBoxEl.innerHTML = '';
@@ -402,7 +449,7 @@
       } else {
         // Refresh UI for updated transaction item list and selection
         const index = transactions.indexOf(activeTransaction);
-        selectTransaction(index, document.querySelector(`.transaction-entry[data-tx-index="${index}"]`));
+        selectTransaction(index, document.querySelector(`.transaction-entry[data-tx-index="\${index}"]`));
       }
 
       // Persist updated transactions to storage and refresh list rendering
@@ -463,3 +510,4 @@
 </script>
 </body>
 </html>
+
