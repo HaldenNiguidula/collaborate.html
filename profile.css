@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background: #fff;
+    background: #d7c858;
     width: 100vw;
     height: 100vh;
 }
@@ -65,7 +65,7 @@ body {
     padding: 12px;
     font-size: 16px;
     background: #eaeaea;
-    border: none;
+    border: 1px;
     border-radius: 5px;
     box-sizing: border-box; 
 }

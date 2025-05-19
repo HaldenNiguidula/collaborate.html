@@ -86,7 +86,7 @@ echo <<<HTML
                 <a href="Admin.php">Home</a>
                 <a href="profile.php">Profile</a>
                 <a href="admin-transaction.php">Transaction</a>
-                <a href="sales-report.php">Sales Report</a>
+                <a href="cash-drawer.php">Cash Drawer</a>
             </nav>
 
             <nav class="bottom-nav" aria-label="User Identity">
