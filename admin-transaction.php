@@ -110,8 +110,8 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Key for storing transaction data in localStorage
-    const TRANSACTION_STORAGE_KEY = 'savedTransactions';
+    // Data storage for transactions and UI state tracking, start empty
+    let transactions = [];
 
     // Cache DOM elements for interaction
     const transactionListEl = document.getElementById('transactionList');
@@ -130,59 +130,12 @@
     const closeDrawerBtn = document.getElementById('close-drawer');
     const drawerBackdrop = document.getElementById('drawer-backdrop');
 
-    // Data storage for transactions and UI state tracking
-    let transactions = []; // Array of all transaction objects
     let activeTransaction = null; // Currently selected transaction
     let selectedItemsForRefund = new Set(); // Indices of items selected for refund
 
     // Utility: Format number as Philippine Peso currency string
     function formatCurrency(amount) {
       return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(amount);
-    }
-
-    // Load transactions from localStorage, fallback to empty array if invalid or none
-    function loadTransactions() {
-      try {
-        const stored = localStorage.getItem(TRANSACTION_STORAGE_KEY);
-        if(stored) {
-          const parsed = JSON.parse(stored);
-          if(Array.isArray(parsed)) {
-            transactions = parsed;
-            return;
-          }
-        }
-      } catch(e) {
-        console.error('Failed to load transactions from localStorage:', e);
-      }
-      // If no saved transactions, initialize with sample transactions including paymentType
-      transactions = [
-        {
-          orderNumber: "ORD1001",
-          totalPrice: 1500,
-          paymentType: "Cash",
-          items: [
-            { name: "Item A", price: 500 },
-            { name: "Item B", price: 1000 }
-          ]
-        },
-        {
-          orderNumber: "ORD1002",
-          totalPrice: 2000,
-          paymentType: "GCash",
-          items: [
-            { name: "Item C", price: 2000 }
-          ]
-        },
-        {
-          orderNumber: "ORD1003",
-          totalPrice: 750,
-          paymentType: "Cash",
-          items: [
-            { name: "Item D", price: 750 }
-          ]
-        }
-      ];
-      saveTransactions();
     }
 
     // Render transaction list filtering by search term (default empty)
@@ -421,7 +374,7 @@
       alert(`Reprinting receipt for order number ${activeTransaction.orderNumber}.`);
     });
 
-    // Refund button action: confirm, remove selected items from transaction, and update UI & storage
+    // Refund button action: confirm, remove selected items from transaction, and update UI
     refundBtn.addEventListener('click', () => {
       if(!activeTransaction || selectedItemsForRefund.size === 0) return;
       if(!confirm(`Are you sure you want to refund ${selectedItemsForRefund.size} selected item${selectedItemsForRefund.size > 1 ? 's' : ''} from order ${activeTransaction.orderNumber}?`)) return;
@@ -452,15 +405,9 @@
         selectTransaction(index, document.querySelector(`.transaction-entry[data-tx-index="\${index}"]`));
       }
 
-      // Persist updated transactions to storage and refresh list rendering
-      saveTransactions();
+      // Refresh the transaction list UI after refund changes
       renderTransactionList(searchInput.value.trim());
     });
-
-    // Save transactions array to localStorage
-    function saveTransactions() {
-      localStorage.setItem(TRANSACTION_STORAGE_KEY, JSON.stringify(transactions));
-    }
 
     // Debounced search input handler for filtering transaction list
     let searchTimeout = null;
@@ -503,11 +450,9 @@
     closeDrawerBtn.addEventListener('click', closeDrawer);
     drawerBackdrop.addEventListener('click', closeDrawer);
 
-    // Initial load: fetch transactions from storage and render the initial list
-    loadTransactions();
+    // Initial render of transaction list
     renderTransactionList();
   });
 </script>
 </body>
 </html>
-

@@ -170,27 +170,10 @@
   };
 
   function loadAndRenderItems() {
-    let stored = null;
-    try {
-      stored = localStorage.getItem('menuItems');
-    } catch (e) {
-      console.error('Error reading localStorage menuItems', e);
-    }
-    let items = [];
-    if (stored) {
-      try {
-        items = JSON.parse(stored);
-        if (!Array.isArray(items)) throw new Error('Invalid menuItems format');
-      } catch {
-        items = [...defaultItems];
-      }
-    } else {
-      items = [...defaultItems];
-    }
-
+    // Using only defaultItems, no localStorage
     Object.values(categoryContainers).forEach(container => container.innerHTML = '');
 
-    items.forEach(item => {
+    defaultItems.forEach(item => {
       if (!categoryContainers[item.category]) return;
       const box = document.createElement('div');
       box.className = 'item-box';
@@ -417,25 +400,12 @@
   }
 
   function saveTransaction(transaction) {
-    const TRANSACTION_STORAGE_KEY = 'savedTransactions';
-    let savedTransactions = [];
-    try {
-      const existing = localStorage.getItem(TRANSACTION_STORAGE_KEY);
-      if (existing) {
-        const parsed = JSON.parse(existing);
-        if (Array.isArray(parsed)) {
-          savedTransactions = parsed;
-        }
-      }
-    } catch(e) {
-      console.error('Error reading saved transactions', e);
+    // Save transactions in-memory only, no localStorage
+    if (!window.savedTransactions) {
+      window.savedTransactions = [];
     }
-    savedTransactions.push(transaction);
-    try {
-      localStorage.setItem(TRANSACTION_STORAGE_KEY, JSON.stringify(savedTransactions));
-    } catch(e) {
-      console.error('Error saving transaction', e);
-    }
+    window.savedTransactions.push(transaction);
+    // No persistent storage since localStorage removed
   }
 
   window.onload = () => {
